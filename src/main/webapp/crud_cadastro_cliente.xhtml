@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Define bibliotecas(tags) usadas na página -->
+<!-- Pode se usar elementos HTML padrão misturados com os JSF e Primefaces sem problemas -->
+<!-- As tags ui, h e f são do JSF -->
+<!-- ui são para elementos de organização (templates) e automatização (laços e condicionais) -->
+<!-- h são reimplementações de elementos HTML padrão que fornecem algumas funções/facilidades adicionais -->
+<!-- f são para comunicação/transmição de parâmetros entre páginas e para controle de requisições AJAX -->
+<!-- A tag p são do Primefaces, ela reimplementa as tags h com ainda mais funcionalidades e fornece tags adicionais com recursos avançados de Javascript e CSS embutidos -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+	<!-- import java.util.regex.Pattern;
+	import java.util.regex.Matcher; -->
+    
+    <!-- Usado para definir uso do Template -->
+    <!-- O template só serve para uma melhor organização do código e para evitar a repetição de código -->
+    <ui:define name="content">
+    
+    	<!-- Define formulário para Dialogs (elementos estilo Pop-up) -->
+    	<!-- Lembre-se que o uso de formulários só não é necessário para elementos que são estáticos (sem ação, animação, conteúdo dinâmico) -->     
+        <h:form id="dialogs">
+        	<p:growl id="messages"/>
+	        <p:dialog header="Novo Cliente" showEffect="fade" modal="true" widgetVar="clienteDialog" responsive="true">   
+	            <p:outputPanel id="cliente-conteudo-dialog" class="ui-fluid">
+	                <p:outputPanel rendered="#{not empty clienteController.cliente}">
+
+						<div class="field">
+							<p:outputLabel for="id">CPF Cliente</p:outputLabel>
+							<p:inputText id="id" value="#{clienteController.cliente.cpf}" required="true" validator="#{clienteController.validarCPF}" />
+							<p:message for="id" />
+						</div>
+
+						<div class="field">
+							<p:outputLabel for="nome">Nome</p:outputLabel>
+							<p:inputText id="nome" value="#{clienteController.cliente.nome}" required="true">
+								<f:validateRegex pattern="^[A-Za-z\s]+$" />
+							</p:inputText>
+							<p:message for="nome" />
+							<p:outputLabel for="nome" style="color:red" rendered="#{facesContext.maximumSeverity.ordinal eq 2}">O nome deve conter apenas letras e espaços em branco</p:outputLabel>
+						</div>
+						
+						
+
+						<div class="field">
+							<p:outputLabel for="nomeSocial">Nome social</p:outputLabel>
+							<p:inputText id="nomeSocial" value="#{clienteController.cliente.nomeSocial}" required="true"/>
+						</div>
+
+						<!-- <div class="field">
+							<p:outputLabel for="altura">Altura</p:outputLabel>
+							<p:inputMask id="altura" value="#{clienteController.cliente.altura}" mask="9.99" required="true">
+							</p:inputMask>
+						</div> -->
+
+						<div class="field">
+							<p:outputLabel for="altura">Altura</p:outputLabel>
+							<p:inputMask id="altura" value="#{clienteController.cliente.altura}" mask="9.99" required="true">
+								<p:ajax event="blur" listener="#{clienteController.validarAlturaMaiorQueZero}" update="alturaMessage" />
+							</p:inputMask>
+							<p:message id="alturaMessage" for="altura" />
+						</div>
+						
+						
+						
+						<div class="field">
+							<p:outputLabel for="massa">Massa</p:outputLabel>
+							<p:inputMask id="massa" value="#{clienteController.cliente.massa}" mask="99" required="true" onblur="verificarMassa()">
+							</p:inputMask>
+						</div>
+						
+						<div class="field">
+							<p:outputLabel for="genero">Genero</p:outputLabel>
+							<p:inputText id="genero" value="#{clienteController.cliente.genero}" required="true"/>
+						</div>
+
+						<div class="field">
+							<p:outputLabel for="idade">Idade</p:outputLabel>
+							<p:inputText id="idade" value="#{clienteController.cliente.idade}" required="true"/>
+						</div>
+
+						<div class="field">
+							<p:outputLabel for="email">E-mail</p:outputLabel>
+							<p:inputText id="email" value="#{clienteController.cliente.email}" required="true"/>
+						</div>
+
+						<div class="field">
+							<p:outputLabel for="telefone">telefone</p:outputLabel>
+							<p:inputMask id="telefone" value="#{clienteController.cliente.telefone}" mask="(99)99999-9999" required="true" validator="#{clienteController.validarTelefone}" />
+							<p:message for="telefone" />
+						</div>
+						
+						<div class="field">
+							<p:outputLabel for="endereco">Endereco</p:outputLabel>
+							<p:inputText id="endereco" value="#{clienteController.cliente.endereco}" required="true"/>
+						</div>
+	                </p:outputPanel>
+	            </p:outputPanel>
+	
+	            <f:facet name="footer">
+					<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{clienteController.salvarNovo()}"
+	                    update="cliente-conteudo-dialog dialogs:messages" process="cliente-conteudo-dialog @this" />
+					<p:commandButton value="Salvar Alteração" icon="pi pi-check" actionListener="#{clienteController.salvarAlteracao()}"
+	                    update="cliente-conteudo-dialog dialogs:messages" process="cliente-conteudo-dialog @this" />
+	                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('clienteDialog').hide()" class="ui-button-secondary" type="button" />
+	            </f:facet>
+	        </p:dialog>
+
+	        <p:confirmDialog widgetVar="removerClienteDialog" showEffect="fade" width="300"
+	            message="Desejar remover este cliente?" header="Confirm" severity="warn">
+	            <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{clienteController.remover}"
+	                process="@this" oncomplete="PF('removerClienteDialog').hide()" />
+	            <p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times" onclick="PF('removerClienteDialog').hide()" />
+	        </p:confirmDialog>
+		
+        </h:form>     
+        
+        <!-- Define formulário principal -->  
+        <h:form id="form">
+            <p:growl id="messages" showDetail="true" />
+            
+            <p:toolbar>
+	            <p:toolbarGroup>
+	                <p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{clienteController.novoCadastro}"
+	                    update=":dialogs:cliente-conteudo-dialog" oncomplete="PF('clienteDialog').show()"
+	                    styleClass="ui-button-success" style="margin-right: .5rem">
+	                    <p:resetInput target=":dialogs:cliente-conteudo-dialog" />
+	                </p:commandButton>
+	            </p:toolbarGroup>
+	        </p:toolbar>
+
+		
+			<h:form styleClass="search-form">
+				<div class="search-container">
+					<p:inputText value="#{dtBasicView.filterText}" placeholder="Search for customers by name" />
+					<p:commandButton icon="pi pi-search" 
+									 actionListener="#{dtBasicView.filtrar}" 
+									 update="tabelaCarros" />
+				
+					<p:spacer width="100" />
+				
+					<p:selectOneButton value="#{dtBasicView.genderFilter}">
+						<f:selectItem itemLabel="Homem" itemValue="Homem" />
+						<f:selectItem itemLabel="Mulher" itemValue="Mulher" />
+						<f:selectItem itemLabel="Other" itemValue="Other" />
+					</p:selectOneButton>
+
+					<p:commandButton icon="pi pi-search" 
+									 actionListener="#{dtBasicView.filtrar}" 
+									 update="tabelaCarros"
+									 styleClass="search-button" />
+					
+				</div>
+				
+			
+				
+			
+				<p:dataTable id="tabelaCarros" 
+							 value="#{dtBasicView.cars}" 
+							 var="car">
+				</p:dataTable>
+				
+			</h:form>
+						 
+			
+	
+	        <p:dataTable id="dt-clientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.listaCliente}">
+	            <f:facet name="header">
+	                <div>
+	                    <span style="font-weight: bold">Clientes</span>
+	                </div>
+	            </f:facet>
+
+				<p:column headerText="cpf Cliente">
+	                <h:outputText value="#{cliente.cpf}" />
+	            </p:column>
+
+				<p:column headerText="nome">
+	                <h:outputText value="#{cliente.nome}" />
+	            </p:column>
+			
+
+	            <p:column headerText="nomeSocial">
+	                <h:outputText value="#{cliente.nomeSocial}" />
+	            </p:column>
+
+				<p:column headerText="altura">
+	                <h:outputText value="#{cliente.altura} cm" />
+	            </p:column>
+
+
+                <p:column headerText="massa">
+	                <h:outputText value="#{cliente.massa} Kg" />
+	            </p:column>
+
+                <p:column headerText="genero">
+	                <h:outputText value="#{cliente.genero}" />
+	            </p:column>
+
+                <p:column headerText="idade">
+	                <h:outputText value="#{cliente.idade} Ano(s)" />
+	            </p:column>
+
+                <p:column headerText="e-mail">
+	                <h:outputText value="#{cliente.email}" />
+	            </p:column>
+
+                <p:column headerText=" telefone ">
+	                <h:outputText value="#{cliente.telefone}" />
+	            </p:column>
+
+                <p:column headerText="endereco">
+	                <h:outputText value="#{cliente.endereco}" />
+	            </p:column>
+
+	            <p:column>
+	            	<!-- Cuidado com botões que usam AJAX -->
+	            	<!-- process indica qual elemento do formulário será processado (padrão é todo o formulário), @this é só o próprio elemento -->
+	            	<!-- update informa qual elemento será atualizado (renderizado novamente) ao finalizar ação -->
+	            	<!-- é possível disparar ações para diversos eventos Javascript, deve-se cuidar a ordem da resolução dos mesmos -->
+	            	<!-- como regra geral a prioridade de processamento é a seguinte (eventos on... - oncomplete, onclick, onblur, actionListener, action, oncomplete no final) -->
+	            	<!-- PF é usado para chamada de função Javascript de algum elemento do Primefaces -->
+					<p:commandButton icon="pi pi-pencil" update=":dialogs:cliente-conteudo-dialog" 
+	                    oncomplete="PF('clienteDialog').show()" 
+	                    styleClass="edit-button rounded-button ui-button-success" process="@this">
+	                    <f:setPropertyActionListener value="#{cliente}" target="#{clienteController.cliente}" />
+	                    <p:resetInput target=":dialogs:cliente-conteudo-dialog" />
+	                </p:commandButton>
+	                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+	                                 process="@this" oncomplete="PF('removerClienteDialog').show()">
+	                    <f:setPropertyActionListener value="#{cliente}" target="#{clienteController.cliente}" />
+	                </p:commandButton>
+	            </p:column>
+	
+	        </p:dataTable>
+	    </h:form>
+    
+    </ui:define>
+</ui:composition>

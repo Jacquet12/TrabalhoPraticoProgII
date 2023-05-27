@@ -13,13 +13,14 @@ import javax.inject.Inject;
 import javax.sql.DataSource;
 import br.edu.projeto.util.DbUtil;
 import br.edu.projeto.model.Cliente;
+import br.edu.projeto.model.Cliente;
 //Classe DAO responsável pelas regras de negócio envolvendo operações de persistência de dados
 //Indica-se a acriação de um DAO específico para cada Modelo
 
 //Anotação EJB que indica que Bean (objeto criado para a classe) será comum para toda a aplicação
 //Isso faz com que recursos computacionais sejam otimizados e garante maior segurança nas transações com o banco
 @Stateful
-public class ClienteDAO implements Serializable{
+public class modeloDAO implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Inject
@@ -32,18 +33,18 @@ public class ClienteDAO implements Serializable{
     	ResultSet rs = null;//Resposta do SGBD
     	try {
 			con = this.ds.getConnection();//Pegar um conexão
-			ps = con.prepareStatement("SELECT cliente_nome,cliente_nome_social,cpf_cliente, altura_cliente ,massa_cliente,genero_cliente,idade_cliente,email_cliente,telefone_cliente,endereco_cliente FROM cliente");
+			ps = con.prepareStatement("SELECT cliente_nome,cliente_nome_social,cpf_cliente, altura_cliente ,massa_cliente,genero_cliente,idade_cliente,email_ciente,telefone_cliente,endereco_cliente FROM cliente");
 			rs = ps.executeQuery();
 			while (rs.next()) {//Pega próxima linha do retorno
 				Cliente c = new Cliente();
 				c.setNome(rs.getString("cliente_nome"));
 				c.setNomeSocial(rs.getString("cliente_nome_social"));
 				c.setCpf(rs.getString("cpf_cliente"));
-                c.setAltura(rs.getDouble("altura_cliente"));
+                c.setAltura(rs.getInt("altura_cliente"));
 				c.setMassa(rs.getInt("massa_cliente"));
                 c.setGenero(rs.getString("genero_cliente"));
 				c.setIdade(rs.getInt("idade_cliente"));
-                c.setEmail(rs.getString("email_cliente"));
+                c.setEmail(rs.getString("email_ciente"));
                 c.setTelefone(rs.getString("telefone_cliente"));
                 c.setEndereco(rs.getString("endereco_cliente"));
 				clientes.add(c);
@@ -64,7 +65,7 @@ public class ClienteDAO implements Serializable{
     	ResultSet rs = null;//Resposta do SGBD
     	try {
 			con = this.ds.getConnection();//Pegar um conexão
-			ps = con.prepareStatement("SELECT cliente_nome,cliente_nome_social,cpf_cliente, altura_cliente ,massa_cliente,genero_cliente,idade_cliente,email_cliente,telefone_cliente,endereco_cliente FROM cliente WHERE cpf = ?");
+			ps = con.prepareStatement("SELECT cliente_nome,cliente_nome_social,cpf_cliente, altura_cliente ,massa_cliente,genero_cliente,idade_cliente,email_ciente,telefone_cliente,endereco_cliente FROM cliente WHERE cpf = ?");
 			ps.setString(1, cpf);
 			rs = ps.executeQuery();
 			while (rs.next()) {//Pega próxima linha do retorno
@@ -72,11 +73,11 @@ public class ClienteDAO implements Serializable{
                 c.setNome(rs.getString("cliente_nome"));
 				c.setNomeSocial(rs.getString("cliente_nome_social"));
 				c.setCpf(rs.getString("cpf_cliente"));
-                c.setAltura(rs.getDouble("altura_cliente"));
+                c.setAltura(rs.getInt("altura_cliente"));
                 c.setMassa(rs.getInt("massa_cliente"));
                 c.setGenero(rs.getString("genero_cliente"));
                 c.setIdade(rs.getInt("idade_cliente"));
-                c.setEmail(rs.getString("email_cliente"));
+                c.setEmail(rs.getString("email_ciente"));
                 c.setTelefone(rs.getString("telefone_cliente"));
                 c.setEndereco(rs.getString("endereco_cliente"));
 
@@ -99,11 +100,11 @@ public class ClienteDAO implements Serializable{
     	try {
 	    	con = this.ds.getConnection();
 	    	try {				
-				ps = con.prepareStatement("INSERT INTO cliente (cliente_nome,cliente_nome_social,cpf_cliente , altura_cliente ,massa_cliente,genero_cliente,idade_cliente,email_cliente,telefone_cliente,endereco_cliente) VALUES (?, ?,?,?,?,?,?,?,?,?)");
+				ps = con.prepareStatement("INSERT INTO cliente (cliente_nome,cliente_nome_social,cpf_cliente , altura_cliente ,massa_cliente,genero_cliente,idade_cliente,email_ciente,telefone_cliente,endereco_cliente) VALUES (?, ?,?,?,?,?,?,?,?,?)");
                 ps.setString(1, c.getNome());
                 ps.setString(2, c.getNomeSocial());
 				ps.setString(3, c.getCpf());
-				ps.setDouble(4, c.getAltura());
+				ps.setInt(4, c.getAltura());
 				ps.setInt(5, c.getMassa());
 				ps.setString(6, c.getGenero());
                 ps.setInt(7, c.getIdade());
@@ -128,17 +129,18 @@ public class ClienteDAO implements Serializable{
     	try {
 	    	con = this.ds.getConnection();
 	    	try {				
-				ps = con.prepareStatement("UPDATE cliente SET cliente_nome_social=? , altura_cliente=? ,massa_cliente=?,genero_cliente=?,idade_cliente=?,email_cliente=?,telefone_cliente=?,endereco_cliente=? WHERE cpf_cliente = ?");
+				ps = con.prepareStatement("UPDATE cliente SET cliente_nome = ?,cliente_nome_social = ?, cpf_cliente= ? ,massa_cliente=?,altura_cliente =?,genero_cliente =?,idade_ciente =?,email_cliente =?,telefone_cliente=?, endereco_cliente=? WHERE cpf_cliente = ?");
 				
-                ps.setString(1, c.getNomeSocial());
-				ps.setDouble(2, c.getAltura());
-				ps.setInt(3, c.getMassa());
-				ps.setString(4, c.getGenero());
-				ps.setInt(5, c.getIdade());
-				ps.setString(6, c.getEmail());
-				ps.setString(7, c.getTelefone());
-				ps.setString(8, c.getEndereco()); 
-				ps.setString(9, c.getCpf());              
+                ps.setString(1, c.getNome());
+                ps.setString(2, c.getNomeSocial());
+				ps.setString(3, c.getCpf());
+				ps.setInt(4, c.getMassa());
+				ps.setDoubles(5, c.getAltura());
+				ps.setString(6, c.getGenero());
+				ps.setInt(7, c.getIdade());
+				ps.setString(8, c.getEmail());
+				ps.setString(9, c.getTelefone());
+				ps.setString(10, c.getEndereco());               
 				ps.execute();	
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}

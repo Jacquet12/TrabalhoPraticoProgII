@@ -1,13 +1,32 @@
 package br.edu.projeto.model;
+import java.math.BigDecimal;
 
-public class cliente {
+   
+
+
+public class Cliente {
     private String nome;
 
     private String nomeSocial;
     
     private String cpf;
     
-    private Integer altura;
+    private Double altura;
+
+	private Integer massa;
+    
+    private String genero;
+    
+    private Integer idade;
+    
+    private String email;
+    
+    private String telefone;
+    
+    private String celular;
+
+	private String endereco;
+
 
     public String getNome() {
 		return nome;
@@ -31,14 +50,6 @@ public class cliente {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
-	}
-
-	public Integer getAltura() {
-		return altura;
-	}
-
-	public void setAltura(Integer altura) {
-		this.altura = altura;
 	}
 
 	public Integer getMassa() {
@@ -89,15 +100,28 @@ public class cliente {
 		this.celular = celular;
 	}
 
-	private Integer massa;
+	public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+		this.endereco = endereco;
+    }
+
+    public Double getAltura() {
+        return altura;
+    }
+
+    public void setAltura(Double altura) {
+        this.altura = altura;
+    }
     
-    private String genero;
-    
-    private Integer idade;
-    
-    private String email;
-    
-    private String telefone;
-    
-    private String celular;
+    public Double getAlturaAsDouble() {
+        if (altura != null) {
+            return altura.doubleValue();
+        } else {
+            return null;
+        }
+    }
 }
+
