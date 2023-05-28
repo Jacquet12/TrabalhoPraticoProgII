@@ -47,8 +47,13 @@ public class ClienteController implements Serializable {
     private ClienteDAO clienteDAO;
 	
 	private Cliente cliente;
+
+	private String nomeFiltrado;
 	
 	private List<Cliente> listaCliente;
+
+	private List<Cliente> clientesFiltrados;
+
 	
 	//Anotação que força execução do método após o construtor da classe ser executado
     @PostConstruct
@@ -127,23 +132,6 @@ public class ClienteController implements Serializable {
     }
 	
 
-	// public boolean validarAltura(String altura) {
-	// 	if (altura == null || altura.trim().isEmpty()) {
-	// 		throw new IllegalArgumentException("Altura não pode ser nula ou vazia.");
-	// 	}
-
-	// 	if (!altura.matches("^\\d+(\\.\\d{1,2})?|\\d+(,\\d{1,2})?$")) {
-	// 		throw new IllegalArgumentException("Altura deve estar no formato correto.");
-	// 	}
-
-	// 	double alturaNum = Double.parseDouble(altura.replace(",", "."));
-	// 	if (alturaNum <= 0) {
-	// 		throw new IllegalArgumentException("Altura deve ser maior do que zero.");
-	// 	}
-
-    //  return true;
-    // }
-
 	public void validarAlturaMaiorQueZero() {
 		if (cliente.getAltura() <= 0) {
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Altura deve ser maior que zero.", null);
@@ -157,6 +145,10 @@ public class ClienteController implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			cliente.setMassa(null);// Limpar o valor da altura para que o usuário digite novamente
 		}
+	}
+
+	public void filtrar() {
+		this.clientesFiltrados = clienteDAO.ClienteFiltrado(nomeFiltrado);
 	}
 	
 
@@ -175,4 +167,22 @@ public class ClienteController implements Serializable {
 	public void setListaCliente(List<Cliente> listaCliente) {
 		this.listaCliente = listaCliente;
 	}
+
+	public List<Cliente> getClientesFiltrados() {
+		return clientesFiltrados;
+	}
+	
+	public void setClientesFiltrados(List<Cliente> clientesFiltrados) {
+		this.clientesFiltrados = clientesFiltrados;
+	}
+	
+
+	public String getNomeFiltrado() {
+		return nomeFiltrado;
+	}
+	
+	public void setNomeFiltrado(String nomeFiltrado) {
+		this.nomeFiltrado = nomeFiltrado;
+	}
+
 }

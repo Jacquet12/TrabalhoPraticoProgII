@@ -134,14 +134,60 @@
 		
 			<h:form styleClass="search-form">
 				<div class="search-container">
-					<p:inputText value="#{dtBasicView.filterText}" placeholder="Search for customers by name" />
-					<p:commandButton icon="pi pi-search" 
-									 actionListener="#{dtBasicView.filtrar}" 
-									 update="tabelaCarros" />
-				
+					<p:inputText value="#{clienteController.nomeFiltrado}" placeholder="Search for customers by name" />
+					<p:commandButton icon="pi pi-search" actionListener="#{clienteController.filtrar}" update="tabelaClientes" />					
 					<p:spacer width="100" />
+					
+					<p:dataTable id="tabelaClientes" value="#{clienteController.nomeFiltrado}" var="cliente">
+						<p:column headerText="cpf Cliente">
+							<h:outputText value="#{cliente.cpf}" />
+						</p:column>
+		
+						<!-- <p:column headerText="nome">
+							<h:outputText value="#{cliente.nome}" />
+						</p:column>
+					
+						<p:column headerText="nomeSocial">
+							<h:outputText value="#{cliente.nomeSocial}" />
+						</p:column>
+		
+						<p:column headerText="altura">
+							<h:outputText value="#{cliente.altura} cm" />
+						</p:column>
+		
+		
+						<p:column headerText="massa">
+							<h:outputText value="#{cliente.massa} Kg" />
+						</p:column>
+		
+						<p:column headerText="genero">
+							<h:outputText value="#{cliente.genero}" />
+						</p:column>
+		
+						<p:column headerText="idade">
+							<h:outputText value="#{cliente.idade} Ano(s)" />
+						</p:column>
+		
+						<p:column headerText="e-mail">
+							<h:outputText value="#{cliente.email}" />
+						</p:column>
+		
+						<p:column headerText=" telefone ">
+							<h:outputText value="#{cliente.telefone}" />
+						</p:column>
+		
+						<p:column headerText="endereco">
+							<h:outputText value="#{cliente.endereco}" />
+						</p:column> -->
+						
+					</p:dataTable>
+					
+				</div>
 				
-					<p:selectOneButton value="#{dtBasicView.genderFilter}">
+			</h:form>
+
+
+					<!-- <p:selectOneButton value="#{dtBasicView.genderFilter}">
 						<f:selectItem itemLabel="Homem" itemValue="Homem" />
 						<f:selectItem itemLabel="Mulher" itemValue="Mulher" />
 						<f:selectItem itemLabel="Other" itemValue="Other" />
@@ -150,19 +196,7 @@
 					<p:commandButton icon="pi pi-search" 
 									 actionListener="#{dtBasicView.filtrar}" 
 									 update="tabelaCarros"
-									 styleClass="search-button" />
-					
-				</div>
-				
-			
-				
-			
-				<p:dataTable id="tabelaCarros" 
-							 value="#{dtBasicView.cars}" 
-							 var="car">
-				</p:dataTable>
-				
-			</h:form>
+									 styleClass="search-button" /> -->
 						 
 			
 	
