@@ -49,10 +49,12 @@ public class ClienteController implements Serializable {
 	private Cliente cliente;
 
 	private String nomeFiltrado;
+	private String generoFiltrado;
 	
 	private List<Cliente> listaCliente;
 
 	private List<Cliente> clientesFiltrados;
+	private List<Cliente> clientesFiltradoPorGenero;
 
 	
 	//Anotação que força execução do método após o construtor da classe ser executado
@@ -154,6 +156,12 @@ public class ClienteController implements Serializable {
 		PrimeFaces.current().ajax().update("form:messages", "form:tabelaClientes");
 	}
 
+	public void filtarPorGenero(){
+		this.clientesFiltradoPorGenero = clienteDAO.ClienteFiltradoPorgenero(generoFiltrado);
+		PrimeFaces.current().executeScript("PF('productDialog').hide()");
+		PrimeFaces.current().ajax().update("form:messages", "form:tabelaClientes");
+	}
+
 
 
 	public Cliente getCliente() {
@@ -179,7 +187,17 @@ public class ClienteController implements Serializable {
 	public void setClientesFiltrados(List<Cliente> clientesFiltrados) {
 		this.clientesFiltrados = clientesFiltrados;
 	}
+
+	//filtro de busca por genero
+	public List<Cliente> getClientesFiltradoPorGenero() {
+		return clientesFiltradoPorGenero;
+	}
 	
+	public void gsetClientesFiltradoPorGenero(List<Cliente> clientesFiltradoPorGenero) {
+		this.clientesFiltradoPorGenero = clientesFiltradoPorGenero;
+	}
+
+	//get and para filtro por nome
 
 	public String getNomeFiltrado() {
 		return nomeFiltrado;
@@ -187,6 +205,14 @@ public class ClienteController implements Serializable {
 	
 	public void setNomeFiltrado(String nomeFiltrado) {
 		this.nomeFiltrado = nomeFiltrado;
+	}
+
+	public String getGeneroFiltrado() {
+		return generoFiltrado;
+	}
+	
+	public void setGeneroFiltrado(String generoFiltrado) {
+		this.generoFiltrado = generoFiltrado;
 	}
 
 }

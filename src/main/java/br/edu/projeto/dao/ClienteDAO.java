@@ -227,6 +227,56 @@ public class ClienteDAO implements Serializable{
 	}
 
 
+	public List<Cliente> ClienteFiltradoPorgenero(String generoFiltrado) {
+		List<Cliente> clientesFiltradoPorgenero = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			con = this.ds.getConnection();
+			if (this.generoFiltrado == Homem || this.generoFiltrado == Mulher){
+				ps = con.prepareStatement("SELECT cliente_nome, cliente_nome_social, cpf_cliente, altura_cliente, massa_cliente, genero_cliente, idade_cliente, email_cliente, telefone_cliente, endereco_cliente FROM cliente WHERE genero_cliente LIKE ?");
+				ps.setString(1, "%" + generoFiltrado + "%");
+				rs = ps.executeQuery();
+				while (rs.next()) {
+					Cliente c = new Cliente();
+					c.setNome(rs.getString("cliente_nome"));
+					c.setNomeSocial(rs.getString("cliente_nome_social"));
+					c.setCpf(rs.getString("cpf_cliente"));
+					c.setAltura(rs.getDouble("altura_cliente"));
+					c.setMassa(rs.getInt("massa_cliente"));
+					c.setGenero(rs.getString("genero_cliente"));
+					c.setIdade(rs.getInt("idade_cliente"));
+					c.setEmail(rs.getString("email_cliente"));
+					c.setTelefone(rs.getString("telefone_cliente"));
+					c.setEndereco(rs.getString("endereco_cliente"));
+					clientesFiltradoPorgenero.add(c);
+				}
+				
+			}catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (rs != null) {
+						rs.close();
+					}
+					if (ps != null) {
+						ps.close();
+					}
+					if (con != null) {
+						con.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return clientesFiltradoPorgenero;
+		}
+	}
+
+	
+
+
 }
 
 
