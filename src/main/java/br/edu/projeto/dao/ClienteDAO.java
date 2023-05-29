@@ -174,7 +174,7 @@ public class ClienteDAO implements Serializable{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			con = DbUtil.getConnection();
+			con = this.ds.getConnection();
 			ps = con.prepareStatement("SELECT cliente_nome, cliente_nome_social, cpf_cliente, altura_cliente, massa_cliente, genero_cliente, idade_cliente, email_cliente, telefone_cliente, endereco_cliente FROM cliente WHERE cliente_nome LIKE ?");
 			ps.setString(1, "%" + nomeFiltrado + "%");
 			rs = ps.executeQuery();
@@ -190,25 +190,42 @@ public class ClienteDAO implements Serializable{
 				c.setEmail(rs.getString("email_cliente"));
 				c.setTelefone(rs.getString("telefone_cliente"));
 				c.setEndereco(rs.getString("endereco_cliente"));
-	
-				clientesFiltrados.add(c);
+
+				if (verificarNomeFiltrado(c.getNome(), nomeFiltrado)) {
+					clientesFiltrados.add(c);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DbUtil.closeResultSet(rs);
-			DbUtil.closePreparedStatement(ps);
-			DbUtil.closeConnection(con);
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return clientesFiltrados;
 	}
-	
 
+	private boolean verificarNomeFiltrado(String nomeCliente, String nomeFiltrado) {
+		if (nomeCliente.length() >= 2) {
+			for (int i = 0; i <= nomeCliente.length() - 2; i++) {
+				if (nomeCliente.substring(i, i + 2).equalsIgnoreCase(nomeFiltrado.substring(0, 2))) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
-// String nomeDigitado = "Jo"; // Supondo que o usuário digitou "Jo" como filtro de nome
-// String query = "SELECT cliente_nome, cliente_nome_social, cpf_cliente, altura_cliente, massa_cliente, genero_cliente, idade_cliente, email_cliente, telefone_cliente, endereco_cliente FROM cliente WHERE cliente_nome LIKE ?";
-// PreparedStatement ps = con.prepareStatement(query);
-// ps.setString(1, "%" + nomeDigitado + "%");
 
 }
 

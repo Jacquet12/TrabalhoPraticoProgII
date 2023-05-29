@@ -119,6 +119,8 @@
         
         <!-- Define formulário principal -->  
         <h:form id="form">
+
+				
             <p:growl id="messages" showDetail="true" />
             
             <p:toolbar>
@@ -131,75 +133,57 @@
 	            </p:toolbarGroup>
 	        </p:toolbar>
 
-		
-			<h:form styleClass="search-form">
-				<div class="search-container">
-					<p:inputText value="#{clienteController.nomeFiltrado}" placeholder="Search for customers by name" />
-					<p:commandButton icon="pi pi-search" actionListener="#{clienteController.filtrar}" update="tabelaClientes" />					
-					<p:spacer width="100" />
-					
-					<p:dataTable id="tabelaClientes" value="#{clienteController.nomeFiltrado}" var="cliente">
-						<p:column headerText="cpf Cliente">
-							<h:outputText value="#{cliente.cpf}" />
-						</p:column>
-		
-						<!-- <p:column headerText="nome">
-							<h:outputText value="#{cliente.nome}" />
-						</p:column>
-					
-						<p:column headerText="nomeSocial">
-							<h:outputText value="#{cliente.nomeSocial}" />
-						</p:column>
-		
-						<p:column headerText="altura">
-							<h:outputText value="#{cliente.altura} cm" />
-						</p:column>
-		
-		
-						<p:column headerText="massa">
-							<h:outputText value="#{cliente.massa} Kg" />
-						</p:column>
-		
-						<p:column headerText="genero">
-							<h:outputText value="#{cliente.genero}" />
-						</p:column>
-		
-						<p:column headerText="idade">
-							<h:outputText value="#{cliente.idade} Ano(s)" />
-						</p:column>
-		
-						<p:column headerText="e-mail">
-							<h:outputText value="#{cliente.email}" />
-						</p:column>
-		
-						<p:column headerText=" telefone ">
-							<h:outputText value="#{cliente.telefone}" />
-						</p:column>
-		
-						<p:column headerText="endereco">
-							<h:outputText value="#{cliente.endereco}" />
-						</p:column> -->
-						
-					</p:dataTable>
-					
-				</div>
-				
-			</h:form>
+			<p:inputText value="#{clienteController.nomeFiltrado}" placeholder="Search for customers by name" />
+			<p:commandButton icon="pi pi-search" action="#{clienteController.filtrar}" update="tabelaClientes" />					
+			<p:spacer width="100" />
+
+			<p:dataTable id="tabelaClientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltrados}">
+
+				<p:column headerText="cpf Cliente">
+					<h:outputText value="#{cliente.cpf}" />
+				</p:column>
 
 
-					<!-- <p:selectOneButton value="#{dtBasicView.genderFilter}">
-						<f:selectItem itemLabel="Homem" itemValue="Homem" />
-						<f:selectItem itemLabel="Mulher" itemValue="Mulher" />
-						<f:selectItem itemLabel="Other" itemValue="Other" />
-					</p:selectOneButton>
-
-					<p:commandButton icon="pi pi-search" 
-									 actionListener="#{dtBasicView.filtrar}" 
-									 update="tabelaCarros"
-									 styleClass="search-button" /> -->
-						 
+				<p:column headerText="nome">
+	                <h:outputText value="#{cliente.nome}" />
+	            </p:column>
 			
-	
+
+	            <p:column headerText="nomeSocial">
+	                <h:outputText value="#{cliente.nomeSocial}" />
+	            </p:column>
+
+				<p:column headerText="altura">
+	                <h:outputText value="#{cliente.altura} cm" />
+	            </p:column>
+
+
+                <p:column headerText="massa">
+	                <h:outputText value="#{cliente.massa} Kg" />
+	            </p:column>
+
+                <p:column headerText="genero">
+	                <h:outputText value="#{cliente.genero}" />
+	            </p:column>
+
+                <p:column headerText="idade">
+	                <h:outputText value="#{cliente.idade} Ano(s)" />
+	            </p:column>
+
+                <p:column headerText="e-mail">
+	                <h:outputText value="#{cliente.email}" />
+	            </p:column>
+
+                <p:column headerText=" telefone ">
+	                <h:outputText value="#{cliente.telefone}" />
+	            </p:column>
+
+                <p:column headerText="endereco">
+	                <h:outputText value="#{cliente.endereco}" />
+	            </p:column>
+
+			</p:dataTable>
+
 	        <p:dataTable id="dt-clientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.listaCliente}">
 	            <f:facet name="header">
 	                <div>
@@ -269,7 +253,10 @@
 	            </p:column>
 	
 	        </p:dataTable>
+	
+	
 	    </h:form>
+
     
     </ui:define>
 </ui:composition>
