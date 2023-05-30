@@ -234,7 +234,7 @@ public class ClienteDAO implements Serializable{
 		ResultSet rs = null;
 		try {
 			con = this.ds.getConnection();
-			if (this.generoFiltrado == Homem || this.generoFiltrado == Mulher){
+			if ("Homem".equals(generoFiltrado) || "Mulher".equals(generoFiltrado) || "Outro".equals(generoFiltrado)) {
 				ps = con.prepareStatement("SELECT cliente_nome, cliente_nome_social, cpf_cliente, altura_cliente, massa_cliente, genero_cliente, idade_cliente, email_cliente, telefone_cliente, endereco_cliente FROM cliente WHERE genero_cliente LIKE ?");
 				ps.setString(1, "%" + generoFiltrado + "%");
 				rs = ps.executeQuery();
@@ -252,31 +252,28 @@ public class ClienteDAO implements Serializable{
 					c.setEndereco(rs.getString("endereco_cliente"));
 					clientesFiltradoPorgenero.add(c);
 				}
-				
-			}catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					if (rs != null) {
-						rs.close();
-					}
-					if (ps != null) {
-						ps.close();
-					}
-					if (con != null) {
-						con.close();
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 			}
-			return clientesFiltradoPorgenero;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+		return clientesFiltradoPorgenero;
 	}
-
 	
-
-
 }
+
 
 

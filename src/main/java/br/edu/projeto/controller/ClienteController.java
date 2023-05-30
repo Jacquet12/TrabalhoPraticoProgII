@@ -156,10 +156,9 @@ public class ClienteController implements Serializable {
 		PrimeFaces.current().ajax().update("form:messages", "form:tabelaClientes");
 	}
 
-	public void filtarPorGenero(){
+	public void filtrarPorGenero(){
 		this.clientesFiltradoPorGenero = clienteDAO.ClienteFiltradoPorgenero(generoFiltrado);
-		PrimeFaces.current().executeScript("PF('productDialog').hide()");
-		PrimeFaces.current().ajax().update("form:messages", "form:tabelaClientes");
+		PrimeFaces.current().ajax().update("form:messages", "form:tabelasClientes");
 	}
 
 
