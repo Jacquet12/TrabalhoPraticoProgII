@@ -49,11 +49,10 @@
 							<p:inputText id="nomeSocial" value="#{clienteController.cliente.nomeSocial}" required="true"/>
 						</div>
 
-						<!-- <div class="field">
-							<p:outputLabel for="altura">Altura</p:outputLabel>
-							<p:inputMask id="altura" value="#{clienteController.cliente.altura}" mask="9.99" required="true">
-							</p:inputMask>
-						</div> -->
+						<div class="field">
+							<p:outputLabel for="nacionalidade">Nacionalidade</p:outputLabel>
+							<p:inputText id="nacionalidade" value="#{clienteController.cliente.nomeSocial}" required="true"/>
+						</div>
 
 						<div class="field">
 							<p:outputLabel for="altura">Altura</p:outputLabel>
@@ -164,6 +163,19 @@
 	            <p:column headerText="nomeSocial">
 	                <h:outputText value="#{cliente.nomeSocial}" />
 	            </p:column>
+
+				<div class="field">
+					<p:outputLabel for="nacionalidade" value="Nacionalidade" />
+					<p:selectOneMenu id="nacionalidade" value="#{clienteController.cliente.nomeSocial}" required="true">
+					  <f:selectItem itemLabel="Selecione a nacionalidade" itemValue="" />
+					  <f:selectItem itemLabel="Brasileiro nato" itemValue="Brasileiro nato" />
+					  <f:selectItem itemLabel="Brasileiro naturalizado" itemValue="Brasileiro naturalizado" />
+					  <f:selectItem itemLabel="Dupla ou múltipla nacionalidade" itemValue="Dupla ou múltipla nacionalidade" />
+					  <f:selectItem itemLabel="Perda da nacionalidade" itemValue="Perda da nacionalidade" />
+					  <f:selectItem itemLabel="Reaquisição de nacionalidade" itemValue="Reaquisição de nacionalidade" />
+					  <f:selectItem itemLabel="Estrangeiro" itemValue="Estrangeiro" />
+					</p:selectOneMenu>
+				</div>
 
 				<p:column headerText="altura">
 	                <h:outputText value="#{cliente.altura} cm" />

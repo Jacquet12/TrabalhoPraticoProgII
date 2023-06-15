@@ -26,6 +26,7 @@ public class Cliente {
     private String celular;
 
 	private String endereco;
+	private String nacionalidade;
 
 
     public String getNome() {
@@ -42,6 +43,14 @@ public class Cliente {
 
 	public void setNomeSocial(String nomeSocial) {
 		this.nomeSocial = nomeSocial;
+	}
+
+	public void setNacionalidade (String nacionalidade){
+		this.nacionalidade = nacionalidade;
+	}
+
+	public String getNacionalidade (){
+		return nacionalidade;
 	}
 
 	public String getCpf() {
