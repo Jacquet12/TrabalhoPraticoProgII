@@ -49,9 +49,15 @@
 							<p:inputText id="nomeSocial" value="#{clienteController.cliente.nomeSocial}" required="true"/>
 						</div>
 
-						<p:selectOneMenu value="#{bean.selectedOptions}" filterMatchMode="custom" filterFunction="customFilter">
-							<f:selectItems value="#{bean.options}" />
+						<p:outputLabel for="nacionalidade" value="Tipo de Nacionalidade:"/>
+						<p:selectOneMenu id="nacionalidade" value="#{clienteController.nacionalidade}">
+							<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/>
+							<f:selectItems value="#{clienteController.obterListaNacionalidades()}"
+										   var="nacionalidade"
+										   itemLabel="#{nacionalidade.tipo_nacionalidade}"
+										   itemValue="#{nacionalidade}"/>
 						</p:selectOneMenu>
+						
 
 						<div class="field">
 							<p:outputLabel for="altura">Altura</p:outputLabel>

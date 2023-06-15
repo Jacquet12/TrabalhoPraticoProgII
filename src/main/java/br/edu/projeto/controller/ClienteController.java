@@ -15,6 +15,7 @@ import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 
 import br.edu.projeto.dao.ClienteDAO;
+import br.edu.projeto.dao.NacionalidadeDAO;
 import br.edu.projeto.model.Cliente;
 import br.edu.projeto.model.TipoNacionalidade;
 
@@ -46,6 +47,8 @@ public class ClienteController implements Serializable {
 	
 	@Inject
     private ClienteDAO clienteDAO;
+	private NacionalidadeDAO nacionalidadeDAO;
+	
 	
 	private Cliente cliente;
 
@@ -165,9 +168,10 @@ public class ClienteController implements Serializable {
 		PrimeFaces.current().ajax().update("form:messages", "form:tabelasClientes");
 	}
 
-	// public List<TipoNacionalidade> obterListaNacionalidades() {
-
-  	// }
+	  
+	public List<TipoNacionalidade> obterListaNacionalidades() {
+		return this.listaNacionalidades = nacionalidadeDAO.obterTodos();
+	}
 
 
 
