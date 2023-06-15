@@ -28,6 +28,8 @@ public class Cliente {
 	private String endereco;
 	private String nacionalidade;
 
+	private TipoNacionalidade tipoNacionalidade;
+
 
     public String getNome() {
 		return nome;
@@ -124,6 +126,14 @@ public class Cliente {
     public void setAltura(Double altura) {
         this.altura = altura;
     }
+
+	public void setTipoNacionalidade(TipoNacionalidade tipoNacionalidade){
+		this.tipoNacionalidade = tipoNacionalidade;
+	}
+
+	public TipoNacionalidade getTipoNacionalidade(){
+		return tipoNacionalidade;
+	}
     
     public Double getAlturaAsDouble() {
         if (altura != null) {

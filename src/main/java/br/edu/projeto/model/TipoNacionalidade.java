@@ -1,6 +1,6 @@
 package br.edu.projeto.model;
 
-public class nacionalidade {
+public class TipoNacionalidade {
     private Integer id;
     private String descricao;
 

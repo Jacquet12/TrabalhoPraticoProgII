@@ -49,10 +49,9 @@
 							<p:inputText id="nomeSocial" value="#{clienteController.cliente.nomeSocial}" required="true"/>
 						</div>
 
-						<div class="field">
-							<p:outputLabel for="nacionalidade">Nacionalidade</p:outputLabel>
-							<p:inputText id="nacionalidade" value="#{clienteController.cliente.nomeSocial}" required="true"/>
-						</div>
+						<p:selectOneMenu value="#{bean.selectedOptions}" filterMatchMode="custom" filterFunction="customFilter">
+							<f:selectItems value="#{bean.options}" />
+						</p:selectOneMenu>
 
 						<div class="field">
 							<p:outputLabel for="altura">Altura</p:outputLabel>
@@ -164,18 +163,9 @@
 	                <h:outputText value="#{cliente.nomeSocial}" />
 	            </p:column>
 
-				<div class="field">
-					<p:outputLabel for="nacionalidade" value="Nacionalidade" />
-					<p:selectOneMenu id="nacionalidade" value="#{clienteController.cliente.nomeSocial}" required="true">
-					  <f:selectItem itemLabel="Selecione a nacionalidade" itemValue="" />
-					  <f:selectItem itemLabel="Brasileiro nato" itemValue="Brasileiro nato" />
-					  <f:selectItem itemLabel="Brasileiro naturalizado" itemValue="Brasileiro naturalizado" />
-					  <f:selectItem itemLabel="Dupla ou múltipla nacionalidade" itemValue="Dupla ou múltipla nacionalidade" />
-					  <f:selectItem itemLabel="Perda da nacionalidade" itemValue="Perda da nacionalidade" />
-					  <f:selectItem itemLabel="Reaquisição de nacionalidade" itemValue="Reaquisição de nacionalidade" />
-					  <f:selectItem itemLabel="Estrangeiro" itemValue="Estrangeiro" />
-					</p:selectOneMenu>
-				</div>
+				<p:column headerText="nacionalidade">
+	                <h:outputText value="#{cliente.nacionalidade}" />
+	            </p:column>
 
 				<p:column headerText="altura">
 	                <h:outputText value="#{cliente.altura} cm" />

@@ -16,6 +16,7 @@ import org.primefaces.PrimeFaces;
 
 import br.edu.projeto.dao.ClienteDAO;
 import br.edu.projeto.model.Cliente;
+import br.edu.projeto.model.TipoNacionalidade;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -55,6 +56,9 @@ public class ClienteController implements Serializable {
 
 	private List<Cliente> clientesFiltrados;
 	private List<Cliente> clientesFiltradoPorGenero;
+
+	private List<TipoNacionalidade> listaNacionalidades;
+  	private TipoNacionalidade nacionalidade;
 
 	
 	//Anotação que força execução do método após o construtor da classe ser executado
@@ -161,6 +165,10 @@ public class ClienteController implements Serializable {
 		PrimeFaces.current().ajax().update("form:messages", "form:tabelasClientes");
 	}
 
+	// public List<TipoNacionalidade> obterListaNacionalidades() {
+
+  	// }
+
 
 
 	public Cliente getCliente() {
@@ -192,11 +200,20 @@ public class ClienteController implements Serializable {
 		return clientesFiltradoPorGenero;
 	}
 	
-	public void gsetClientesFiltradoPorGenero(List<Cliente> clientesFiltradoPorGenero) {
+	public void setClientesFiltradoPorGenero(List<Cliente> clientesFiltradoPorGenero) {
 		this.clientesFiltradoPorGenero = clientesFiltradoPorGenero;
 	}
 
+	public List<TipoNacionalidade> getListaNacionalidades() {
+		return listaNacionalidades;
+	}
+	
+	public void setListaNacionalidades(List<TipoNacionalidade> listaNacionalidades) {
+		this.listaNacionalidades = listaNacionalidades;
+	}
+
 	//get and para filtro por nome
+	
 
 	public String getNomeFiltrado() {
 		return nomeFiltrado;
@@ -212,6 +229,15 @@ public class ClienteController implements Serializable {
 	
 	public void setGeneroFiltrado(String generoFiltrado) {
 		this.generoFiltrado = generoFiltrado;
+	}
+
+
+	public TipoNacionalidade getTipoNacionalidade() {
+		return nacionalidade;
+	}
+	
+	public void setNacionalidade(TipoNacionalidade nacionalidade) {
+		this.nacionalidade = nacionalidade;
 	}
 
 }
