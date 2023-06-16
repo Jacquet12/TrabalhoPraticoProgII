@@ -73,8 +73,7 @@ public class ClienteController implements Serializable {
 	private List<Cliente> clientesFiltradoPorGenero;
 
 	private List<TipoNacionalidade> listaNacionalidades;
-  	private TipoNacionalidade nacionalidade;
-	private TipoNacionalidade nacionalidadeSelecionada;
+  	private TipoNacionalidade nacionalidadeSelecionada;
 
 	
 	//Anotação que força execução do método após o construtor da classe ser executado
@@ -182,9 +181,8 @@ public class ClienteController implements Serializable {
 	}
 
 	  
-	public List<TipoNacionalidade> obterListaNacionalidades() {
-		return this.listaNacionalidades = nacionalidadeDAO.obterTodos();
-	}
+	List<TipoNacionalidade> obterListaNacionalidades = nacionalidadeDAO.obterTodos();
+	
 
 
 
@@ -249,14 +247,6 @@ public class ClienteController implements Serializable {
 	}
 
 
-	public TipoNacionalidade getTipoNacionalidade() {
-		return nacionalidade;
-	}
-	
-	public void setNacionalidade(TipoNacionalidade nacionalidade) {
-		this.nacionalidade = nacionalidade;
-	}
-
 	public TipoNacionalidade getNacionalidadeSelecionada() {
     	return nacionalidadeSelecionada;
 	}
@@ -265,33 +255,5 @@ public class ClienteController implements Serializable {
     	this.nacionalidadeSelecionada = nacionalidade;
 	}
 
-	@FacesConverter("tipoNacionalidadeConverter")
-	public class TipoNacionalidadeConverter implements Converter {
-
-    @Override
-    public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        if (value != null && !value.isEmpty()) {
-            ClienteController clienteController = context.getApplication().evaluateExpressionGet(context, "#{clienteController}", ClienteController.class);
-            List<TipoNacionalidade> listaNacionalidades = clienteController.obterListaNacionalidades();
-            for (TipoNacionalidade nacionalidade : listaNacionalidades) {
-                if (nacionalidade.getTipo_nacionalidade().equals(value)) {
-                    return nacionalidade;
-                }
-            }
-            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro de conversão", "Nacionalidade inválida."));
-        }
-        return null;
-    }
-
-    @Override
-    public String getAsString(FacesContext context, UIComponent component, Object value) {
-        if (value instanceof TipoNacionalidade) {
-            TipoNacionalidade nacionalidade = (TipoNacionalidade) value;
-            return nacionalidade.getTipo_nacionalidade();
-        }
-        return null;
-    }
-}
-
-
+	
 }

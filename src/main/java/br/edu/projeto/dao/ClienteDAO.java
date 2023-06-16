@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.sql.DataSource;
 import br.edu.projeto.util.DbUtil;
 import br.edu.projeto.model.Cliente;
+import br.edu.projeto.model.TipoNacionalidade;
 
 
 
@@ -24,36 +25,43 @@ public class ClienteDAO implements Serializable{
 	private DataSource ds;
     
     public List<Cliente> listAll() {
-    	List<Cliente> clientes = new ArrayList<Cliente>();
-    	Connection con = null;//Conexão com a base
-    	PreparedStatement ps = null;//Instrução SQL
-    	ResultSet rs = null;//Resposta do SGBD
-    	try {
-			con = this.ds.getConnection();//Pegar um conexão
-			ps = con.prepareStatement("SELECT cliente_nome,cliente_nome_social,cpf_cliente, altura_cliente ,massa_cliente,genero_cliente,idade_cliente,email_cliente,telefone_cliente,endereco_cliente FROM cliente");
-			rs = ps.executeQuery();
-			while (rs.next()) {//Pega próxima linha do retorno
-				Cliente c = new Cliente();
-				c.setNome(rs.getString("cliente_nome"));
-				c.setNomeSocial(rs.getString("cliente_nome_social"));
-				c.setCpf(rs.getString("cpf_cliente"));
-                c.setAltura(rs.getDouble("altura_cliente"));
-				c.setMassa(rs.getInt("massa_cliente"));
-                c.setGenero(rs.getString("genero_cliente"));
-				c.setIdade(rs.getInt("idade_cliente"));
-                c.setEmail(rs.getString("email_cliente"));
-                c.setTelefone(rs.getString("telefone_cliente"));
-                c.setEndereco(rs.getString("endereco_cliente"));
-				clientes.add(c);
-			}
-		} catch (SQLException e) {e.printStackTrace();
-		} finally {
-			DbUtil.closeResultSet(rs);
-			DbUtil.closePreparedStatement(ps);
-			DbUtil.closeConnection(con);
-		}
-        return clientes;
+    List<Cliente> clientes = new ArrayList<Cliente>();
+    Connection con = null; // Conexão com o banco de dados
+    PreparedStatement ps = null; // Instrução SQL
+    ResultSet rs = null; // Resultado do SGBD
+    try {
+        con = this.ds.getConnection(); // Obter uma conexão
+        ps = con.prepareStatement("SELECT cliente_nome, cliente_nome_social, cpf_cliente, altura_cliente, massa_cliente, genero_cliente, idade_cliente, email_cliente, telefone_cliente, endereco_cliente, tipo_nacionalidade_id, tipo_nacionalidade FROM cliente JOIN tipo_nacionalidade ON cliente.tipo_nacionalidade_id = tipo_nacionalidade.id");
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Cliente c = new Cliente();
+            c.setNome(rs.getString("cliente_nome"));
+            c.setNomeSocial(rs.getString("cliente_nome_social"));
+            c.setCpf(rs.getString("cpf_cliente"));
+            c.setAltura(rs.getDouble("altura_cliente"));
+            c.setMassa(rs.getInt("massa_cliente"));
+            c.setGenero(rs.getString("genero_cliente"));
+            c.setIdade(rs.getInt("idade_cliente"));
+            c.setEmail(rs.getString("email_cliente"));
+            c.setTelefone(rs.getString("telefone_cliente"));
+            c.setEndereco(rs.getString("endereco_cliente"));
+            // Definir o tipo de nacionalidade do cliente
+            TipoNacionalidade tipoNacionalidade = new TipoNacionalidade();
+            tipoNacionalidade.setId(rs.getInt("tipo_nacionalidade_id"));
+            tipoNacionalidade.setTipo_nacionalidade(rs.getString("tipo_nacionalidade"));
+            c.setNacionalidade(tipoNacionalidade);
+            clientes.add(c);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        DbUtil.closeResultSet(rs);
+        DbUtil.closePreparedStatement(ps);
+        DbUtil.closeConnection(con);
     }
+    return clientes;
+}
+
     
     public List<Cliente> listBycpf(String cpf) {
     	List<Cliente> clientes = new ArrayList<Cliente>();
@@ -88,7 +96,7 @@ public class ClienteDAO implements Serializable{
         return clientes;
     }
        
-    public Boolean insert(Cliente c) {
+    public Boolean insert(Cliente c, TipoNacionalidade nacionalidadeSelecionada) {
     	Boolean resultado = false;
     	Connection con = null;
     	PreparedStatement ps = null;
@@ -106,7 +114,8 @@ public class ClienteDAO implements Serializable{
 				ps.setString(8, c.getEmail());
 				ps.setString(9, c.getTelefone());
                 ps.setString(10, c.getEndereco());
-				ps.setString(11, c.getNacionalidade());
+				ps.setInt(11, c.getTipoNacionalidade().getId());
+				ps.setString(12, c.getTipoNacionalidade().getTipo_nacionalidade());
 				ps.execute();
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}

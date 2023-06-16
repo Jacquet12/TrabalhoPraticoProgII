@@ -26,7 +26,7 @@ public class Cliente {
     private String celular;
 
 	private String endereco;
-	private String nacionalidade;
+	private TipoNacionalidade nacionalidade;
 
 
     public String getNome() {
@@ -45,13 +45,6 @@ public class Cliente {
 		this.nomeSocial = nomeSocial;
 	}
 
-	public void setNacionalidade (String nacionalidade){
-		this.nacionalidade = nacionalidade;
-	}
-
-	public String getNacionalidade (){
-		return nacionalidade;
-	}
 
 	public String getCpf() {
 		return cpf;
@@ -124,6 +117,14 @@ public class Cliente {
     public void setAltura(Double altura) {
         this.altura = altura;
     }
+
+	public TipoNacionalidade getTipoNacionalidade() {
+		return nacionalidade;
+	}
+	
+	public void setNacionalidade(TipoNacionalidade nacionalidade) {
+		this.nacionalidade = nacionalidade;
+	}
     
     public Double getAlturaAsDouble() {
         if (altura != null) {
