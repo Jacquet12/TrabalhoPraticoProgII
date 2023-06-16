@@ -30,7 +30,7 @@ public class NacionalidadeDAO implements Serializable{
     	ResultSet rs = null;//Resposta do SGBD
     	try {
 			con = this.ds.getConnection();//Pegar um conexão
-			ps = con.prepareStatement("SELEC id, tipo_nacionalidade FROM nacionalidades");
+			ps = con.prepareStatement("SELECT id, tipo_nacionalidade FROM nacionalidades");
 			rs = ps.executeQuery();
 			while (rs.next()) {//Pega próxima linha do retorno
                 TipoNacionalidade tipoNacionalidade = new TipoNacionalidade();
@@ -45,6 +45,10 @@ public class NacionalidadeDAO implements Serializable{
 			DbUtil.closeConnection(con);
 		}
         return tiposNacionalidade;
+    }
+
+    public TipoNacionalidade obterPorId(Integer id) {
+        return null;
     }
     
     

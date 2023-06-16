@@ -49,15 +49,20 @@
 							<p:inputText id="nomeSocial" value="#{clienteController.cliente.nomeSocial}" required="true"/>
 						</div>
 
-						<p:outputLabel for="nacionalidade" value="Tipo de Nacionalidade:"/>
-						<p:selectOneMenu id="nacionalidade" value="#{clienteController.nacionalidade}">
-							<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/>
-							<f:selectItems value="#{clienteController.obterListaNacionalidades()}"
-										   var="nacionalidade"
-										   itemLabel="#{nacionalidade.tipo_nacionalidade}"
-										   itemValue="#{nacionalidade}"/>
-						</p:selectOneMenu>
+						<div class="field">
+							<p:outputLabel value="Nacionalidade" />
+							<h:selectOneMenu value="#{clienteController.nacionalidadeSelecionada}">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItems value="#{clienteController.obterListaNacionalidades()}" var="nacionalidade"
+											   itemValue="#{nacionalidade}" itemLabel="#{nacionalidade.tipo_nacionalidade}" />
+								<f:converter converterId="tipoNacionalidadeConverter" />
+							</h:selectOneMenu>
+						</div>
 						
+						
+						  
+						  
+						  
 
 						<div class="field">
 							<p:outputLabel for="altura">Altura</p:outputLabel>
@@ -66,7 +71,6 @@
 							</p:inputMask>
 							<p:message id="alturaMessage" for="altura" />
 						</div>
-						
 						
 						
 						<div class="field">

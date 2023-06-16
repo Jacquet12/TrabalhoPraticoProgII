@@ -7,6 +7,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+import javax.faces.convert.FacesConverter;
 import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -18,6 +21,13 @@ import br.edu.projeto.dao.ClienteDAO;
 import br.edu.projeto.dao.NacionalidadeDAO;
 import br.edu.projeto.model.Cliente;
 import br.edu.projeto.model.TipoNacionalidade;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+import javax.faces.convert.FacesConverter;
+
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -44,10 +54,12 @@ public class ClienteController implements Serializable {
 	//O CDI criará uma instância do objeto automaticamente quando necessário
 	@Inject
 	private FacesContext facesContext;
+
+	@Inject
+	private NacionalidadeDAO nacionalidadeDAO;
 	
 	@Inject
     private ClienteDAO clienteDAO;
-	private NacionalidadeDAO nacionalidadeDAO;
 	
 	
 	private Cliente cliente;
@@ -62,6 +74,7 @@ public class ClienteController implements Serializable {
 
 	private List<TipoNacionalidade> listaNacionalidades;
   	private TipoNacionalidade nacionalidade;
+	private TipoNacionalidade nacionalidadeSelecionada;
 
 	
 	//Anotação que força execução do método após o construtor da classe ser executado
@@ -243,5 +256,42 @@ public class ClienteController implements Serializable {
 	public void setNacionalidade(TipoNacionalidade nacionalidade) {
 		this.nacionalidade = nacionalidade;
 	}
+
+	public TipoNacionalidade getNacionalidadeSelecionada() {
+    	return nacionalidadeSelecionada;
+	}
+
+	public void setNacionalidadeSelecionada(TipoNacionalidade nacionalidade) {
+    	this.nacionalidadeSelecionada = nacionalidade;
+	}
+
+	@FacesConverter("tipoNacionalidadeConverter")
+	public class TipoNacionalidadeConverter implements Converter {
+
+    @Override
+    public Object getAsObject(FacesContext context, UIComponent component, String value) {
+        if (value != null && !value.isEmpty()) {
+            ClienteController clienteController = context.getApplication().evaluateExpressionGet(context, "#{clienteController}", ClienteController.class);
+            List<TipoNacionalidade> listaNacionalidades = clienteController.obterListaNacionalidades();
+            for (TipoNacionalidade nacionalidade : listaNacionalidades) {
+                if (nacionalidade.getTipo_nacionalidade().equals(value)) {
+                    return nacionalidade;
+                }
+            }
+            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro de conversão", "Nacionalidade inválida."));
+        }
+        return null;
+    }
+
+    @Override
+    public String getAsString(FacesContext context, UIComponent component, Object value) {
+        if (value instanceof TipoNacionalidade) {
+            TipoNacionalidade nacionalidade = (TipoNacionalidade) value;
+            return nacionalidade.getTipo_nacionalidade();
+        }
+        return null;
+    }
+}
+
 
 }
