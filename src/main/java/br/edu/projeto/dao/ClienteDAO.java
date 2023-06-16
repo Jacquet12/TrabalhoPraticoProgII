@@ -95,7 +95,7 @@ public class ClienteDAO implements Serializable{
     	try {
 	    	con = this.ds.getConnection();
 	    	try {				
-				ps = con.prepareStatement("INSERT INTO cliente (cliente_nome,cliente_nome_social,cpf_cliente , altura_cliente ,massa_cliente,genero_cliente,idade_cliente,email_cliente,telefone_cliente,endereco_cliente) VALUES (?, ?,?,?,?,?,?,?,?,?)");
+				ps = con.prepareStatement("INSERT INTO cliente (cliente_nome,cliente_nome_social,cpf_cliente , altura_cliente ,massa_cliente,genero_cliente,idade_cliente,email_cliente,telefone_cliente,endereco_cliente, tipo_nacionalidade_id) VALUES (?, ?,?,?,?,?,?,?,?,?,?)");
                 ps.setString(1, c.getNome());
                 ps.setString(2, c.getNomeSocial());
 				ps.setString(3, c.getCpf());
@@ -106,6 +106,7 @@ public class ClienteDAO implements Serializable{
 				ps.setString(8, c.getEmail());
 				ps.setString(9, c.getTelefone());
                 ps.setString(10, c.getEndereco());
+				ps.setString(11, c.getNacionalidade());
 				ps.execute();
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}
