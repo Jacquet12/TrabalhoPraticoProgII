@@ -133,5 +133,12 @@ public class Cliente {
             return null;
         }
     }
+
+	public TipoNacionalidade getTipoNacionalidadeSelecionada() {
+		return null;
+	}
+
+	public void setTipoNacionalidade(TipoNacionalidade tipoNacionalidade) {
+	}
 }
 

@@ -37,6 +37,7 @@ import javax.faces.validator.ValidatorException;
 
 
 
+
 //Escopo do objeto da classe (Bean)
 //ApplicationScoped é usado quando o objeto é único na aplicação (compartilhado entre usuários), permanece ativo enquanto a aplicação estiver ativa
 //SessionScoped é usado quando o objeto é único por usuário, permanece ativo enquanto a sessão for ativa
@@ -73,14 +74,14 @@ public class ClienteController implements Serializable {
 	private List<Cliente> clientesFiltradoPorGenero;
 
 	private List<TipoNacionalidade> listaNacionalidades;
-  	private TipoNacionalidade nacionalidadeSelecionada;
-
+  	private TipoNacionalidade tipoNacionalidadeSelecionada;
 	
 	//Anotação que força execução do método após o construtor da classe ser executado
     @PostConstruct
     public void init() {
     	//Inicializa elementos importantes
     	this.listaCliente = clienteDAO.listAll();
+		this.listaNacionalidades= nacionalidadeDAO.obterTodos();
     }
 	
     //Chamado pelo botão novo
@@ -174,17 +175,14 @@ public class ClienteController implements Serializable {
 		PrimeFaces.current().executeScript("PF('productDialog').hide()");
 		PrimeFaces.current().ajax().update("form:messages", "form:tabelaClientes");
 	}
+	
 
 	public void filtrarPorGenero(){
 		this.clientesFiltradoPorGenero = clienteDAO.ClienteFiltradoPorgenero(generoFiltrado);
 		PrimeFaces.current().ajax().update("form:messages", "form:tabelasClientes");
 	}
 
-	  
-	List<TipoNacionalidade> obterListaNacionalidades = nacionalidadeDAO.obterTodos();
 	
-
-
 
 	public Cliente getCliente() {
 		return cliente;
@@ -246,14 +244,45 @@ public class ClienteController implements Serializable {
 		this.generoFiltrado = generoFiltrado;
 	}
 
-
-	public TipoNacionalidade getNacionalidadeSelecionada() {
-    	return nacionalidadeSelecionada;
+	public TipoNacionalidade getTipoNacionalidadeSelecionada() {
+		return tipoNacionalidadeSelecionada;
 	}
 
-	public void setNacionalidadeSelecionada(TipoNacionalidade nacionalidade) {
-    	this.nacionalidadeSelecionada = nacionalidade;
+	public void setTipoNacionalidadeSelecionada(TipoNacionalidade tipoNacionalidadeSelecionada) {
+		this.tipoNacionalidadeSelecionada = tipoNacionalidadeSelecionada;
 	}
 
-	
+
+
+	@FacesConverter("tipoNacionalidadeConverter")
+	public class TipoNacionalidadeConverter implements Converter<TipoNacionalidade> {
+
+		@Inject
+		private NacionalidadeDAO nacionalidadeDAO;
+
+		@Override
+		public TipoNacionalidade getAsObject(FacesContext context, UIComponent component, String value) {
+			if (value == null || value.isEmpty()) {
+				return null;
+			}
+
+			try {
+				Integer id = Integer.valueOf(value);
+				return nacionalidadeDAO.obterPorId(id);
+			} catch (NumberFormatException e) {
+				throw new ConverterException("Formato inválido para TipoNacionalidade", e);
+			}
+		}
+
+		@Override
+		public String getAsString(FacesContext context, UIComponent component, TipoNacionalidade value) {
+			if (value instanceof TipoNacionalidade) {
+				TipoNacionalidade tipoNacionalidade = (TipoNacionalidade) value;
+				return String.valueOf(tipoNacionalidade.getId());
+			}
+			return null;
+		}
+	}
+
+
 }

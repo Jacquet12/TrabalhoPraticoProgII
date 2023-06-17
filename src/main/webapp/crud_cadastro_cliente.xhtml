@@ -12,6 +12,14 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.org/ui"
     template="/WEB-INF/templates/default.xhtml">
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	<converter>
+		<converter-id>tipoNacionalidadeConverter</converter-id>
+		<converter-class>br.edu.projeto.converter.TipoNacionalidadeConverter</converter-class>
+	</converter>
+	
+
 	<!-- import java.util.regex.Pattern;
 	import java.util.regex.Matcher; -->
     
@@ -49,20 +57,17 @@
 							<p:inputText id="nomeSocial" value="#{clienteController.cliente.nomeSocial}" required="true"/>
 						</div>
 
-						<div class="field">
-							<p:outputLabel value="Nacionalidade" />
-							<h:selectOneMenu value="#{clienteController.nacionalidadeSelecionada}">
-								<f:selectItem itemLabel="Selecione" itemValue="" />
-								<f:selectItems value="#{clienteController.obterListaNacionalidades()}" var="nacionalidade"
-											   itemValue="#{nacionalidade}" itemLabel="#{nacionalidade.tipo_nacionalidade}" />
-								<f:converter converterId="tipoNacionalidadeConverter" />
+						<h:form>
+							<h:selectOneMenu value="#{clienteController.tipoNacionalidadeSelecionada}" converter="tipoNacionalidadeConverter">
+								<f:selectItems value="#{clienteController.listaNacionalidades}" var="nacionalidade"
+									itemValue="#{nacionalidade}" itemLabel="#{nacionalidade.tipo_nacionalidade}" />
 							</h:selectOneMenu>
-						</div>
+						</h:form>
+						
+						  
+						  
 						
 						
-						  
-						  
-						  
 
 						<div class="field">
 							<p:outputLabel for="altura">Altura</p:outputLabel>
