@@ -198,7 +198,7 @@ public class ClienteDAO implements Serializable{
 		ResultSet rs = null;
 		try {
 			con = this.ds.getConnection();
-			ps = con.prepareStatement("SELECT cliente_nome, cliente_nome_social, cpf_cliente, altura_cliente, massa_cliente, genero_cliente, idade_cliente, email_cliente, telefone_cliente, endereco_cliente FROM cliente WHERE cliente_nome LIKE ?");
+			ps = con.prepareStatement("SELECT c.cliente_nome, c.cliente_nome_social, c.cpf_cliente, c.altura_cliente, c.massa_cliente, c.genero_cliente, c.idade_cliente, c.email_cliente, c.telefone_cliente, c.endereco_cliente, n.tipo_nacionalidade FROM cliente c JOIN nacionalidades n ON c.tipo_nacionalidade_id = n.id WHERE cliente_nome LIKE ?");
 			ps.setString(1, "%" + nomeFiltrado + "%");
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -213,7 +213,7 @@ public class ClienteDAO implements Serializable{
 				c.setEmail(rs.getString("email_cliente"));
 				c.setTelefone(rs.getString("telefone_cliente"));
 				c.setEndereco(rs.getString("endereco_cliente"));
-
+				c.setTipo_nacionalidade(rs.getString("tipo_nacionalidade"));
 				if (verificarNomeFiltrado(c.getNome(), nomeFiltrado)) {
 					clientesFiltrados.add(c);
 				}
@@ -258,7 +258,7 @@ public class ClienteDAO implements Serializable{
 		try {
 			con = this.ds.getConnection();
 			if ("Homem".equals(generoFiltrado) || "Mulher".equals(generoFiltrado) || "Outro".equals(generoFiltrado)) {
-				ps = con.prepareStatement("SELECT cliente_nome, cliente_nome_social, cpf_cliente, altura_cliente, massa_cliente, genero_cliente, idade_cliente, email_cliente, telefone_cliente, endereco_cliente FROM cliente WHERE genero_cliente LIKE ?");
+				ps = con.prepareStatement("SELECT c.cliente_nome, c.cliente_nome_social, c.cpf_cliente, c.altura_cliente, c.massa_cliente, c.genero_cliente, c.idade_cliente, c.email_cliente, c.telefone_cliente, c.endereco_cliente, n.tipo_nacionalidade FROM cliente c JOIN nacionalidades n ON c.tipo_nacionalidade_id = n.id WHERE genero_cliente LIKE ?");
 				ps.setString(1, "%" + generoFiltrado + "%");
 				rs = ps.executeQuery();
 				while (rs.next()) {
@@ -273,6 +273,7 @@ public class ClienteDAO implements Serializable{
 					c.setEmail(rs.getString("email_cliente"));
 					c.setTelefone(rs.getString("telefone_cliente"));
 					c.setEndereco(rs.getString("endereco_cliente"));
+					c.setTipo_nacionalidade(rs.getString("tipo_nacionalidade"));
 					clientesFiltradoPorgenero.add(c);
 				}
 			}

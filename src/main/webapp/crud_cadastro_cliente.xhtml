@@ -91,10 +91,11 @@
 						</div>
 
 						<div class="field">
-							<p:outputLabel for="telefone">telefone</p:outputLabel>
+							<p:outputLabel for="telefone"> telefone </p:outputLabel>
 							<p:inputMask id="telefone" value="#{clienteController.cliente.telefone}" mask="(99)99999-9999" required="true" validator="#{clienteController.validarTelefone}" />
 							<p:message for="telefone" />
 						</div>
+						
 						
 						<div class="field">
 							<p:outputLabel for="endereco">Endereco</p:outputLabel>
@@ -136,7 +137,7 @@
 	        </p:toolbar>
 
 			<p:inputText value="#{clienteController.nomeFiltrado}" placeholder="Search for customers by name" />
-			<p:commandButton icon="pi pi-search" action="#{clienteController.filtrar}" update="tabelaClientes" />					
+			<p:commandButton icon="pi pi-search" action="#{clienteController.filtrar}" update="tabela-clientes" />					
 			<p:spacer width="100" />
 
 			<p:selectOneButton value="#{clienteController.generoFiltrado}">
@@ -147,13 +148,12 @@
 			
 			<p:commandButton icon="pi pi-search" 
 							 action="#{clienteController.filtrarPorGenero}" 
-							 update="form:tabelasClientes"
+							 update="form:dt-clientes"
 							 styleClass="search-button" />
-			
 
-			<p:dataTable id="tabelaClientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltrados}">
+			<p:dataTable id="tabelas-clientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltradoPorGenero}"> 
 
-				<!-- <p:column headerText="cpf Cliente">
+				<p:column headerText="cpf Cliente">
 					<h:outputText value="#{cliente.cpf}" />
 				</p:column>
 
@@ -198,63 +198,142 @@
 
                 <p:column headerText="endereco">
 	                <h:outputText value="#{cliente.endereco}" />
-	            </p:column> -->
+	            </p:column>
 
-			</p:dataTable>
+				<p:column>
+	            	<!-- Cuidado com botões que usam AJAX -->
+	            	<!-- process indica qual elemento do formulário será processado (padrão é todo o formulário), @this é só o próprio elemento -->
+	            	<!-- update informa qual elemento será atualizado (renderizado novamente) ao finalizar ação -->
+	            	<!-- é possível disparar ações para diversos eventos Javascript, deve-se cuidar a ordem da resolução dos mesmos -->
+	            	<!-- como regra geral a prioridade de processamento é a seguinte (eventos on... - oncomplete, onclick, onblur, actionListener, action, oncomplete no final) -->
+	            	<!-- PF é usado para chamada de função Javascript de algum elemento do Primefaces -->
+					<p:commandButton icon="pi pi-pencil" update=":dialogs:cliente-conteudo-dialog" 
+	                    oncomplete="PF('clienteDialog').show()" 
+	                    styleClass="edit-button rounded-button ui-button-success" process="@this">
+	                    <f:setPropertyActionListener value="#{cliente}" target="#{clienteController.cliente}" />
+	                    <p:resetInput target=":dialogs:cliente-conteudo-dialog" />
+	                </p:commandButton>
+	                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+	                                 process="@this" oncomplete="PF('removerClienteDialog').show()">
+	                    <f:setPropertyActionListener value="#{cliente}" target="#{clienteController.cliente}" />
+	                </p:commandButton>
+	            </p:column>
 
+			</p:dataTable> 
+							 
 			
-			<p:dataTable id="tabelasClientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltradoPorGenero}"> -->
 
-				<!-- <p:column headerText="cpf Cliente">
+			<p:dataTable id="tabela-clientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltrados}"> 
+
+				<p:column headerText="cpf Cliente">
 					<h:outputText value="#{cliente.cpf}" />
 				</p:column>
 
 
 				<p:column headerText="nome">
-					<h:outputText value="#{cliente.nome}" />
-				</p:column>
+	                <h:outputText value="#{cliente.nome}" />
+	            </p:column>
 			
 
-				<p:column headerText="nomeSocial">
-					<h:outputText value="#{cliente.nomeSocial}" />
-				</p:column>
+	            <p:column headerText="nomeSocial">
+	                <h:outputText value="#{cliente.nomeSocial}" />
+	            </p:column>
 
-				<p:column headerText="Nacionalidade">
-					<h:outputText value="#{cliente.nacionalidade}" />
-				</p:column>
+				<p:column headerText="nacionalidade">
+	                <h:outputText value="#{cliente.nacionalidade}" />
+	            </p:column>
 
 				<p:column headerText="altura">
-					<h:outputText value="#{cliente.altura} cm" />
+	                <h:outputText value="#{cliente.altura} cm" />
+	            </p:column>
+
+
+                <p:column headerText="massa">
+	                <h:outputText value="#{cliente.massa} Kg" />
+	            </p:column>
+
+                <p:column headerText="genero">
+	                <h:outputText value="#{cliente.genero}" />
+	            </p:column>
+
+                <p:column headerText="idade">
+	                <h:outputText value="#{cliente.idade} Ano(s)" />
+	            </p:column>
+
+                <p:column headerText="e-mail">
+	                <h:outputText value="#{cliente.email}" />
+	            </p:column>
+
+                <p:column headerText=" telefone "><p:dataTable id="tabela-clientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltrados}"> 
+
+				<p:column headerText="cpf Cliente">
+					<h:outputText value="#{cliente.cpf}" />
 				</p:column>
 
 
-				<p:column headerText="massa">
-					<h:outputText value="#{cliente.massa} Kg" />
-				</p:column>
+				<p:column headerText="nome">
+	                <h:outputText value="#{cliente.nome}" />
+	            </p:column>
+			
 
-				<p:column headerText="genero">
-					<h:outputText value="#{cliente.genero}" />
-				</p:column>
+	            <p:column headerText="nomeSocial">
+	                <h:outputText value="#{cliente.nomeSocial}" />
+	            </p:column>
 
-				<p:column headerText="idade">
-					<h:outputText value="#{cliente.idade} Ano(s)" />
-				</p:column>
+				<p:column headerText="nacionalidade">
+	                <h:outputText value="#{cliente.nacionalidade}" />
+	            </p:column>
 
-				<p:column headerText="e-mail">
-					<h:outputText value="#{cliente.email}" />
-				</p:column>
-
-				<p:column headerText=" telefone ">
-					<h:outputText value="#{cliente.telefone}" />
-				</p:column>
-
-				<p:column headerText="endereco">
-					<h:outputText value="#{cliente.endereco}" />
-				</p:column> -->
-
-			</p:dataTable>
+				<p:column headerText="altura">
+	                <h:outputText value="#{cliente.altura} cm" />
+	            </p:column>
 
 
+                <p:column headerText="massa">
+	                <h:outputText value="#{cliente.massa} Kg" />
+	            </p:column>
+
+                <p:column headerText="genero">
+	                <h:outputText value="#{cliente.genero}" />
+	            </p:column>
+
+                <p:column headerText="idade">
+	                <h:outputText value="#{cliente.idade} Ano(s)" />
+	            </p:column>
+
+                <p:column headerText="e-mail">
+	                <h:outputText value="#{cliente.email}" />
+	            </p:column>
+
+                <p:column headerText=" telefone ">
+	                <h:outputText value="#{cliente.telefone}" />
+	            </p:column>
+
+                <p:column headerText="endereco">
+	                <h:outputText value="#{cliente.endereco}" />
+	            </p:column>
+
+				<p:column>
+	            	<!-- Cuidado com botões que usam AJAX -->
+	            	<!-- process indica qual elemento do formulário será processado (padrão é todo o formulário), @this é só o próprio elemento -->
+	            	<!-- update informa qual elemento será atualizado (renderizado novamente) ao finalizar ação -->
+	            	<!-- é possível disparar ações para diversos eventos Javascript, deve-se cuidar a ordem da resolução dos mesmos -->
+	            	<!-- como regra geral a prioridade de processamento é a seguinte (eventos on... - oncomplete, onclick, onblur, actionListener, action, oncomplete no final) -->
+	            	<!-- PF é usado para chamada de função Javascript de algum elemento do Primefaces -->
+					<p:commandButton icon="pi pi-pencil" update=":dialogs:cliente-conteudo-dialog" 
+	                    oncomplete="PF('clienteDialog').show()" 
+	                    styleClass="edit-button rounded-button ui-button-success" process="@this">
+	                    <f:setPropertyActionListener value="#{cliente}" target="#{clienteController.cliente}" />
+	                    <p:resetInput target=":dialogs:cliente-conteudo-dialog" />
+	                </p:commandButton>
+	                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+	                                 process="@this" oncomplete="PF('removerClienteDialog').show()">
+	                    <f:setPropertyActionListener value="#{cliente}" target="#{clienteController.cliente}" />
+	                </p:commandButton>
+			</p:dataTable> 
+
+			
+			
 	        <p:dataTable id="dt-clientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.listaCliente}">
 	            <f:facet name="header">
 	                <div>
@@ -305,7 +384,7 @@
 
                 <p:column headerText="endereco">
 	                <h:outputText value="#{cliente.endereco}" />
-	            </p:column> -->
+	            </p:column> 
 
 	            <p:column>
 	            	<!-- Cuidado com botões que usam AJAX -->
