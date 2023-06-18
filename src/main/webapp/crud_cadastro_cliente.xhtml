@@ -151,7 +151,7 @@
 			
 			<p:commandButton icon="pi pi-search" 
 							 action="#{clienteController.filtrarPorGenero}" 
-							 update="form:dt-clientes"
+							 update="form:tabelas-clientes"
 							 styleClass="search-button" />
 
 			<p:dataTable id="tabelas-clientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltradoPorGenero}"> 
@@ -171,7 +171,7 @@
 	            </p:column>
 
 				<p:column headerText="nacionalidade">
-	                <h:outputText value="#{cliente.nacionalidade}" />
+	                <h:outputText value="#{cliente.tipo_nacionalidade}" />
 	            </p:column>
 
 				<p:column headerText="altura">
@@ -203,6 +203,25 @@
 	                <h:outputText value="#{cliente.endereco}" />
 	            </p:column>
 
+				<p:column>
+					<!-- Cuidado com botões que usam AJAX -->
+				   <!-- process indica qual elemento do formulário será processado (padrão é todo o formulário), @this é só o próprio elemento -->
+				   <!-- update informa qual elemento será atualizado (renderizado novamente) ao finalizar ação -->
+				   <!-- é possível disparar ações para diversos eventos Javascript, deve-se cuidar a ordem da resolução dos mesmos -->
+				   <!-- como regra geral a prioridade de processamento é a seguinte (eventos on... - oncomplete, onclick, onblur, actionListener, action, oncomplete no final) -->
+				   <!-- PF é usado para chamada de função Javascript de algum elemento do Primefaces -->
+				   <p:commandButton icon="pi pi-pencil" update=":dialogs:cliente-conteudo-dialog" 
+					   oncomplete="PF('clienteDialog').show()" 
+					   styleClass="edit-button rounded-button ui-button-success" process="@this">
+					   <f:setPropertyActionListener value="#{cliente}" target="#{clienteController.cliente}" />
+					   <p:resetInput target=":dialogs:cliente-conteudo-dialog" />
+				   </p:commandButton>
+				   <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+									process="@this" oncomplete="PF('removerClienteDialog').show()">
+					   <f:setPropertyActionListener value="#{cliente}" target="#{clienteController.cliente}" />
+				   </p:commandButton>
+			   </p:column>
+
 			</p:dataTable> 
 							  
 			
@@ -224,7 +243,7 @@
 				</p:column>
 
 				<p:column headerText="nacionalidade">
-					<h:outputText value="#{cliente.nacionalidade}" />
+					<h:outputText value="#{cliente.tipo_nacionalidade}" />
 				</p:column>
 
 				<p:column headerText="altura">
