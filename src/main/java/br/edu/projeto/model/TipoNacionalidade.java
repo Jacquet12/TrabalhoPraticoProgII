@@ -1,14 +1,14 @@
 package br.edu.projeto.model;
 
 public class TipoNacionalidade {
-    private Integer id;
+    private int id;
     private String tipo_nacionalidade;
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

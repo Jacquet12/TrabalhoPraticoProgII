@@ -45,10 +45,10 @@ public class ClienteDAO implements Serializable{
 				c.setEmail(rs.getString("email_cliente"));
 				c.setTelefone(rs.getString("telefone_cliente"));
 				c.setEndereco(rs.getString("endereco_cliente"));
-
-				TipoNacionalidade tipoNacionalidade = new TipoNacionalidade();
-				tipoNacionalidade.setTipo_nacionalidade(rs.getString("tipo_nacionalidade"));
-				c.setTipoNacionalidade(tipoNacionalidade);
+				c.setNacionalidade(rs.getInt("tipo_nacionalidade"));
+				// TipoNacionalidade tipoNacionalidade = new TipoNacionalidade();
+				// tipoNacionalidade.setTipo_nacionalidade(rs.getString("tipo_nacionalidade"));
+				// c.setTipoNacionalidade(tipoNacionalidade);
 
 				clientes.add(c);
 			}
@@ -99,37 +99,45 @@ public class ClienteDAO implements Serializable{
     }
        
 	public Boolean insert(Cliente c) {
-		Boolean resultado = false;
-		Connection con = null;
-		PreparedStatement ps = null;
-		try {
-			con = this.ds.getConnection();
-			try {
-				ps = con.prepareStatement("INSERT INTO cliente (cliente_nome, cliente_nome_social, cpf_cliente, altura_cliente, massa_cliente, genero_cliente, idade_cliente, email_cliente, telefone_cliente, endereco_cliente, tipo_nacionalidade_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				ps.setString(1, c.getNome());
-				ps.setString(2, c.getNomeSocial());
-				ps.setString(3, c.getCpf());
-				ps.setDouble(4, c.getAltura());
-				ps.setInt(5, c.getMassa());
-				ps.setString(6, c.getGenero());
-				ps.setInt(7, c.getIdade());
-				ps.setString(8, c.getEmail());
-				ps.setString(9, c.getTelefone());
-				ps.setString(10, c.getEndereco());
-				ps.setInt(11, c.getTipoNacionalidadeSelecionada().getId());
-				ps.execute();
-				resultado = true;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DbUtil.closePreparedStatement(ps);
-			DbUtil.closeConnection(con);
-		}
-		return resultado;
+    Boolean resultado = false;
+    Connection con = null;
+    PreparedStatement ps = null;
+    try {
+        con = this.ds.getConnection();
+        try {
+            ps = con.prepareStatement("INSERT INTO cliente (cliente_nome, cliente_nome_social, cpf_cliente, altura_cliente, massa_cliente, genero_cliente, idade_cliente, email_cliente, telefone_cliente, endereco_cliente, tipo_nacionalidade_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setString(1, c.getNome());
+            ps.setString(2, c.getNomeSocial());
+            ps.setString(3, c.getCpf());
+            ps.setDouble(4, c.getAltura());
+            ps.setInt(5, c.getMassa());
+            ps.setString(6, c.getGenero());
+            ps.setInt(7, c.getIdade());
+            ps.setString(8, c.getEmail());
+            ps.setString(9, c.getTelefone());
+            ps.setString(10, c.getEndereco());
+			ps.setInt(11, c.getNacionalidade());
+            // TipoNacionalidade tipoNacionalidade = c.getTipoNacionalidadeSelecionada();
+            // if (tipoNacionalidade != null) {
+            //     ps.setInt(11, tipoNacionalidade.getId());
+            // } else {
+            //     throw new IllegalArgumentException("Tipo de nacionalidade não selecionado.");
+            // }
+
+            ps.execute();
+            resultado = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        DbUtil.closePreparedStatement(ps);
+        DbUtil.closeConnection(con);
+    }
+    return resultado;
 	}
+
 
     
     public Boolean update(Cliente c) {

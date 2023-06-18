@@ -26,10 +26,20 @@ public class Cliente {
     private String celular;
 
 	private String endereco;
-	private TipoNacionalidade nacionalidade;
+
+	private int nacionalidade;
+	private String tipo_nacionalidade;
 
 
-    public String getNome() {
+    public String getTipo_nacionalidade() {
+		return tipo_nacionalidade;
+	}
+
+	public void setTipo_nacionalidade(String tipo_nacionalidade) {
+		this.tipo_nacionalidade = tipo_nacionalidade;
+	}
+
+	public String getNome() {
 		return nome;
 	}
 
@@ -118,11 +128,11 @@ public class Cliente {
         this.altura = altura;
     }
 
-	public TipoNacionalidade getTipoNacionalidade() {
+	public int getNacionalidade() {
 		return nacionalidade;
 	}
 	
-	public void setNacionalidade(TipoNacionalidade nacionalidade) {
+	public void setNacionalidade(int nacionalidade) {
 		this.nacionalidade = nacionalidade;
 	}
     
@@ -133,12 +143,5 @@ public class Cliente {
             return null;
         }
     }
-
-	public TipoNacionalidade getTipoNacionalidadeSelecionada() {
-		return null;
-	}
-
-	public void setTipoNacionalidade(TipoNacionalidade tipoNacionalidade) {
-	}
 }
 

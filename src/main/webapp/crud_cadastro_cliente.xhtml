@@ -12,12 +12,6 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.org/ui"
     template="/WEB-INF/templates/default.xhtml">
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	<converter>
-		<converter-id>tipoNacionalidadeConverter</converter-id>
-		<converter-class>br.edu.projeto.converter.TipoNacionalidadeConverter</converter-class>
-	</converter>
 	
 
 	<!-- import java.util.regex.Pattern;
@@ -36,9 +30,9 @@
 	                <p:outputPanel rendered="#{not empty clienteController.cliente}">
 
 						<div class="field">
-							<p:outputLabel for="id">CPF Cliente</p:outputLabel>
-							<p:inputText id="id" value="#{clienteController.cliente.cpf}" required="true" validator="#{clienteController.validarCPF}" />
-							<p:message for="id" />
+							<p:outputLabel for="cpf">CPF Cliente</p:outputLabel>
+							<p:inputText id="cpf" value="#{clienteController.cliente.cpf}" required="true" validator="#{clienteController.validarCPF}" />
+							<p:message for="cpf" />
 						</div>
 
 						<div class="field">
@@ -51,24 +45,21 @@
 						</div>
 						
 						
-
 						<div class="field">
 							<p:outputLabel for="nomeSocial">Nome social</p:outputLabel>
 							<p:inputText id="nomeSocial" value="#{clienteController.cliente.nomeSocial}" required="true"/>
 						</div>
 
-						<h:form>
-							<h:selectOneMenu value="#{clienteController.tipoNacionalidadeSelecionada}" converter="tipoNacionalidadeConverter">
-								<f:selectItems value="#{clienteController.listaNacionalidades}" var="nacionalidade"
-									itemValue="#{nacionalidade}" itemLabel="#{nacionalidade.tipo_nacionalidade}" />
-							</h:selectOneMenu>
-						</h:form>
+						<h:selectOneMenu value="#{clienteController.cliente.nacionalidade}">
+							<f:selectItems
+								value="#{clienteController.listaNacionalidades}"
+								var="nacionalidade"
+								itemValue="#{nacionalidade.id}"
+								itemLabel="#{nacionalidade.tipo_nacionalidade}"
+							/>
+						</h:selectOneMenu>
 						
 						  
-						  
-						
-						
-
 						<div class="field">
 							<p:outputLabel for="altura">Altura</p:outputLabel>
 							<p:inputMask id="altura" value="#{clienteController.cliente.altura}" mask="9.99" required="true">
@@ -132,8 +123,6 @@
         
         <!-- Define formulário principal -->  
         <h:form id="form">
-
-				
             <p:growl id="messages" showDetail="true" />
             
             <p:toolbar>
@@ -164,7 +153,7 @@
 
 			<p:dataTable id="tabelaClientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltrados}">
 
-				<p:column headerText="cpf Cliente">
+				<!-- <p:column headerText="cpf Cliente">
 					<h:outputText value="#{cliente.cpf}" />
 				</p:column>
 
@@ -209,14 +198,14 @@
 
                 <p:column headerText="endereco">
 	                <h:outputText value="#{cliente.endereco}" />
-	            </p:column>
+	            </p:column> -->
 
 			</p:dataTable>
 
 			
-			<p:dataTable id="tabelasClientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltradoPorGenero}">
+			<p:dataTable id="tabelasClientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltradoPorGenero}"> -->
 
-				<p:column headerText="cpf Cliente">
+				<!-- <p:column headerText="cpf Cliente">
 					<h:outputText value="#{cliente.cpf}" />
 				</p:column>
 
@@ -228,6 +217,10 @@
 
 				<p:column headerText="nomeSocial">
 					<h:outputText value="#{cliente.nomeSocial}" />
+				</p:column>
+
+				<p:column headerText="Nacionalidade">
+					<h:outputText value="#{cliente.nacionalidade}" />
 				</p:column>
 
 				<p:column headerText="altura">
@@ -257,7 +250,7 @@
 
 				<p:column headerText="endereco">
 					<h:outputText value="#{cliente.endereco}" />
-				</p:column>
+				</p:column> -->
 
 			</p:dataTable>
 
@@ -276,11 +269,14 @@
 				<p:column headerText="nome">
 	                <h:outputText value="#{cliente.nome}" />
 	            </p:column>
-			
 
 	            <p:column headerText="nomeSocial">
 	                <h:outputText value="#{cliente.nomeSocial}" />
 	            </p:column>
+
+				<p:column headerText="Nacionalidade">
+					<h:outputText value="#{cliente.tipo_nacionalidade}" />
+				</p:column>
 
 				<p:column headerText="altura">
 	                <h:outputText value="#{cliente.altura} cm" />
@@ -309,7 +305,7 @@
 
                 <p:column headerText="endereco">
 	                <h:outputText value="#{cliente.endereco}" />
-	            </p:column>
+	            </p:column> -->
 
 	            <p:column>
 	            	<!-- Cuidado com botões que usam AJAX -->

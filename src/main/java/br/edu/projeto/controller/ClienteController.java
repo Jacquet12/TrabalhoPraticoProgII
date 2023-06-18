@@ -7,9 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
+
 import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -22,18 +20,7 @@ import br.edu.projeto.dao.NacionalidadeDAO;
 import br.edu.projeto.model.Cliente;
 import br.edu.projeto.model.TipoNacionalidade;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
 
-
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
 
 
 
@@ -74,15 +61,16 @@ public class ClienteController implements Serializable {
 	private List<Cliente> clientesFiltradoPorGenero;
 
 	private List<TipoNacionalidade> listaNacionalidades;
-  	private TipoNacionalidade tipoNacionalidadeSelecionada;
+  	// private int tipoNacionalidadeSelecionada;
 	
 	//Anotação que força execução do método após o construtor da classe ser executado
     @PostConstruct
     public void init() {
     	//Inicializa elementos importantes
     	this.listaCliente = clienteDAO.listAll();
-		this.listaNacionalidades= nacionalidadeDAO.obterTodos();
+		this.listaNacionalidades = nacionalidadeDAO.obterTodos();
     }
+
 	
     //Chamado pelo botão novo
 	public void novoCadastro() {
@@ -103,19 +91,19 @@ public class ClienteController implements Serializable {
 	}
 	
 	
-	
-	//Chamado ao salvar cadastro de usuário (novo)
+
 	public void salvarNovo() {
 		if (this.clienteDAO.insert(this.cliente)) {
-            this.listaCliente.add(this.cliente);
-            PrimeFaces.current().executeScript("PF('clienteDialog').hide()");
-            PrimeFaces.current().ajax().update("form:dt-cliente");
-            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente Criado", null));
-		} else{
-        	this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Criar Cliente", null));
-        }
+			PrimeFaces.current().executeScript("PF('clienteDialog').hide()");
+			PrimeFaces.current().ajax().update("form:dt-cliente");
+			this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente Criado con sucesso", null));
+		} else {
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao criar cliente.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
 	}
-	
+
+
 	//Chamado ao salvar cadastro de usuário (alteracao)
 	public void salvarAlteracao() {
 		if (this.cliente.getGenero().equals("Homem") || this.cliente.getGenero().equals("Mulher") || this.cliente.getGenero().equals("Neutro"))
@@ -182,8 +170,6 @@ public class ClienteController implements Serializable {
 		PrimeFaces.current().ajax().update("form:messages", "form:tabelasClientes");
 	}
 
-	
-
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -244,45 +230,13 @@ public class ClienteController implements Serializable {
 		this.generoFiltrado = generoFiltrado;
 	}
 
-	public TipoNacionalidade getTipoNacionalidadeSelecionada() {
-		return tipoNacionalidadeSelecionada;
-	}
+	// public TipoNacionalidade getTipoNacionalidadeSelecionada() {
+	// 	return tipoNacionalidadeSelecionada;
+	// }
 
-	public void setTipoNacionalidadeSelecionada(TipoNacionalidade tipoNacionalidadeSelecionada) {
-		this.tipoNacionalidadeSelecionada = tipoNacionalidadeSelecionada;
-	}
-
-
-
-	@FacesConverter("tipoNacionalidadeConverter")
-	public class TipoNacionalidadeConverter implements Converter<TipoNacionalidade> {
-
-		@Inject
-		private NacionalidadeDAO nacionalidadeDAO;
-
-		@Override
-		public TipoNacionalidade getAsObject(FacesContext context, UIComponent component, String value) {
-			if (value == null || value.isEmpty()) {
-				return null;
-			}
-
-			try {
-				Integer id = Integer.valueOf(value);
-				return nacionalidadeDAO.obterPorId(id);
-			} catch (NumberFormatException e) {
-				throw new ConverterException("Formato inválido para TipoNacionalidade", e);
-			}
-		}
-
-		@Override
-		public String getAsString(FacesContext context, UIComponent component, TipoNacionalidade value) {
-			if (value instanceof TipoNacionalidade) {
-				TipoNacionalidade tipoNacionalidade = (TipoNacionalidade) value;
-				return String.valueOf(tipoNacionalidade.getId());
-			}
-			return null;
-		}
-	}
+	// public void setTipoNacionalidadeSelecionada(TipoNacionalidade tipoNacionalidadeSelecionada) {
+	// 	this.tipoNacionalidadeSelecionada = tipoNacionalidadeSelecionada;
+	// }
 
 
 }
