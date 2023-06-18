@@ -45,7 +45,7 @@ public class ClienteDAO implements Serializable{
 				c.setEmail(rs.getString("email_cliente"));
 				c.setTelefone(rs.getString("telefone_cliente"));
 				c.setEndereco(rs.getString("endereco_cliente"));
-				c.setNacionalidade(rs.getInt("tipo_nacionalidade"));
+				c.setTipo_nacionalidade(rs.getString("tipo_nacionalidade"));
 				// TipoNacionalidade tipoNacionalidade = new TipoNacionalidade();
 				// tipoNacionalidade.setTipo_nacionalidade(rs.getString("tipo_nacionalidade"));
 				// c.setTipoNacionalidade(tipoNacionalidade);
