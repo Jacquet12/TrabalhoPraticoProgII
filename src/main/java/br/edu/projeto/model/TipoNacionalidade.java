@@ -4,7 +4,7 @@ public class TipoNacionalidade {
     private int id;
     private String tipo_nacionalidade;
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
