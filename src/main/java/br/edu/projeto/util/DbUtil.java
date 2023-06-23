@@ -27,4 +27,8 @@ public class DbUtil {
 				con.close();
 			} catch (SQLException e) {e.printStackTrace();}
 	}
+
+    public static Connection getConnection() {
+        return null;
+    }
 }

@@ -12,8 +12,10 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.org/ui"
     template="/WEB-INF/templates/default.xhtml">
-	
-
+	<head>
+		<!-- Outras tags do cabeçalho -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+	  </head>
 	<!-- import java.util.regex.Pattern;
 	import java.util.regex.Matcher; -->
     
@@ -140,7 +142,7 @@
 	        </p:toolbar>
 
 			<p:inputText value="#{clienteController.nomeFiltrado}" placeholder="Search for customers by name" />
-			<p:commandButton icon="pi pi-search" action="#{clienteController.filtrar}" update="tabela-clientes" />					
+			<p:commandButton icon="pi pi-search" action="#{clienteController.filtrar}" update="dt-clientes" />					
 			<p:spacer width="100" />
 
 			<p:selectOneButton value="#{clienteController.generoFiltrado}">
@@ -151,10 +153,18 @@
 			
 			<p:commandButton icon="pi pi-search" 
 							 action="#{clienteController.filtrarPorGenero}" 
-							 update="form:tabelas-clientes"
+							 update="form:dt-clientes"
 							 styleClass="search-button" />
 
-			<p:dataTable id="tabelas-clientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltradoPorGenero}"> 
+
+							 <a href="crud_cadastro_nacionalidade.xhtml" style="color: blue; font-weight: bold; text-decoration: none; font-size: 18px;">
+								<i class="fas fa-arrow-alt-circle-right"></i> Ir até a página de nacionalidades
+							  </a>
+							  
+							  
+
+
+			<!-- <p:dataTable id="tabelas-clientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltradoPorGenero}"> 
 
 				<p:column headerText="cpf Cliente">
 					<h:outputText value="#{cliente.cpf}" />
@@ -203,14 +213,14 @@
 	                <h:outputText value="#{cliente.endereco}" />
 	            </p:column>
 
-				<p:column>
+				<p:column> -->
 					<!-- Cuidado com botões que usam AJAX -->
 				   <!-- process indica qual elemento do formulário será processado (padrão é todo o formulário), @this é só o próprio elemento -->
 				   <!-- update informa qual elemento será atualizado (renderizado novamente) ao finalizar ação -->
 				   <!-- é possível disparar ações para diversos eventos Javascript, deve-se cuidar a ordem da resolução dos mesmos -->
 				   <!-- como regra geral a prioridade de processamento é a seguinte (eventos on... - oncomplete, onclick, onblur, actionListener, action, oncomplete no final) -->
 				   <!-- PF é usado para chamada de função Javascript de algum elemento do Primefaces -->
-				   <p:commandButton icon="pi pi-pencil" update=":dialogs:cliente-conteudo-dialog" 
+				   <!-- <p:commandButton icon="pi pi-pencil" update=":dialogs:cliente-conteudo-dialog" 
 					   oncomplete="PF('clienteDialog').show()" 
 					   styleClass="edit-button rounded-button ui-button-success" process="@this">
 					   <f:setPropertyActionListener value="#{cliente}" target="#{clienteController.cliente}" />
@@ -222,11 +232,11 @@
 				   </p:commandButton>
 			   </p:column>
 
-			</p:dataTable> 
+			</p:dataTable>  -->
 							  
 			
 
-			<p:dataTable id="tabela-clientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltrados}"> 
+			<!-- <p:dataTable id="tabela-clientes" widgetVar="dtClientes" var="cliente" value="#{clienteController.clientesFiltrados}"> 
 
 				<p:column headerText="cpf Cliente">
 					<h:outputText value="#{cliente.cpf}" />
@@ -275,14 +285,14 @@
 					<h:outputText value="#{cliente.endereco}" />
 				</p:column>
 
-				<p:column>
+				<p:column> -->
 	            	 <!-- Cuidado com botões que usam AJAX -->
 	            	<!-- process indica qual elemento do formulário será processado (padrão é todo o formulário), @this é só o próprio elemento -->
 	            	<!-- update informa qual elemento será atualizado (renderizado novamente) ao finalizar ação -->
 	            	<!-- é possível disparar ações para diversos eventos Javascript, deve-se cuidar a ordem da resolução dos mesmos -->
 	            	<!-- como regra geral a prioridade de processamento é a seguinte (eventos on... - oncomplete, onclick, onblur, actionListener, action, oncomplete no final) -->
 	            	<!-- PF é usado para chamada de função Javascript de algum elemento do Primefaces -->
-					<p:commandButton icon="pi pi-pencil" update=":dialogs:cliente-conteudo-dialog" 
+					<!-- <p:commandButton icon="pi pi-pencil" update=":dialogs:cliente-conteudo-dialog" 
 	                    oncomplete="PF('clienteDialog').show()" 
 	                    styleClass="edit-button rounded-button ui-button-success" process="@this">
 	                    <f:setPropertyActionListener value="#{cliente}" target="#{clienteController.cliente}" />
@@ -293,7 +303,7 @@
 	                    <f:setPropertyActionListener value="#{cliente}" target="#{clienteController.cliente}" />
 	                </p:commandButton>
 				</p:column>
-			</p:dataTable>  
+			</p:dataTable>   -->
 
 			
 			
@@ -304,32 +314,32 @@
 	                </div>
 	            </f:facet>
 
-				<p:column headerText="cpf Cliente">
+				<p:column headerText="CPF Cliente">
 	                <h:outputText value="#{cliente.cpf}" />
 	            </p:column>
 
-				<p:column headerText="nome">
+				<p:column headerText="NOME">
 	                <h:outputText value="#{cliente.nome}" />
 	            </p:column>
 
-	            <p:column headerText="nomeSocial">
+	            <p:column headerText="NOME SOCIAL">
 	                <h:outputText value="#{cliente.nomeSocial}" />
 	            </p:column>
 
-				<p:column headerText="Nacionalidade">
+				<p:column headerText="NACIONALIDADE">
 					<h:outputText value="#{cliente.tipo_nacionalidade}" />
 				</p:column>
 
-				<p:column headerText="altura">
+				<p:column headerText="ALTURA">
 	                <h:outputText value="#{cliente.altura} cm" />
 	            </p:column>
 
 
-                <p:column headerText="massa">
+                <p:column headerText="MASSA">
 	                <h:outputText value="#{cliente.massa} Kg" />
 	            </p:column>
 
-                <p:column headerText="genero">
+                <p:column headerText="GENERO">
 	                <h:outputText value="#{cliente.genero}" />
 	            </p:column>
 
@@ -337,15 +347,15 @@
 	                <h:outputText value="#{cliente.idade} Ano(s)" />
 	            </p:column>
 
-                <p:column headerText="e-mail">
+                <p:column headerText="E-MAIL">
 	                <h:outputText value="#{cliente.email}" />
 	            </p:column>
 
-                <p:column headerText=" telefone ">
+                <p:column headerText="TELEFONE">
 	                <h:outputText value="#{cliente.telefone}" />
 	            </p:column>
 
-                <p:column headerText="endereco">
+                <p:column headerText="ENDERECO">
 	                <h:outputText value="#{cliente.endereco}" />
 	            </p:column> 
 

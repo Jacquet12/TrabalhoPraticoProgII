@@ -157,7 +157,7 @@ public class ClienteDAO implements Serializable{
 				ps.setString(6, c.getEmail());
 				ps.setString(7, c.getTelefone());
 				ps.setString(8, c.getEndereco()); 
-				ps.setString(9, c.getCpf());              
+				ps.setString(9, c.getCpf());           
 				ps.execute();	
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}

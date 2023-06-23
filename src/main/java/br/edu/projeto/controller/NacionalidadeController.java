@@ -29,6 +29,8 @@ public class NacionalidadeController implements Serializable {
     private TipoNacionalidade tipoNacionalidade;
     private List<TipoNacionalidade> listaNacionalidades;
 
+    private boolean verificador;
+
     @PostConstruct
     public void init() {
         tipoNacionalidade = new TipoNacionalidade();
@@ -40,11 +42,13 @@ public class NacionalidadeController implements Serializable {
     }
 
     public void remover() {
-        if (nacionalidadeDAO.delete(tipoNacionalidade)) {
+        if (this.nacionalidadeDAO.delete(this.tipoNacionalidade)) {
             listaNacionalidades.remove(tipoNacionalidade);
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de Nacionalidade Removido", null));
+            PrimeFaces.current().ajax().update("form:messages", "form:dt-nacionalidade");
         } else {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Remover Tipo de Nacionalidade pois está em uso!", null));
+            this.verificador = false;
+            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Remover Tipo de Nacionalidade pois está em uso!", null));
         }
         tipoNacionalidade = null;
         PrimeFaces.current().ajax().update("form:messages", "form:dt-nacionalidade");
